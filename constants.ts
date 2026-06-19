@@ -49,7 +49,7 @@ export const FLEET: Car[] = [
   },
   {
     id: 'Hyundai-grandeur',
-    name: 'Hyundai Grandeur',
+    name: 'HYUNDAI GRANDEUR',
     engine: '3.0',
     transmission: Transmission.AUTO,
     fuel: Fuel.LPG,
