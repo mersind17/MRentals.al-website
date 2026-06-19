@@ -40,9 +40,28 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['S-Line Package', 'Navigation', 'Bluetooth', 'Parking Sensors'],
     images: [
-      'photos/Audi A5(1).jpg',
-      'photos/Audi A5(3).jpg',
-      'photos/Audi A5(2).jpg'
+      'photos/Audi A5(1).webp',
+      'photos/Audi A5(3).webp',
+      'photos/Audi A5(2).webp'
+    ],
+    isAvailable: true,
+    category: 'Premium'
+  },
+  {
+    id: 'Hyundai-grandeur',
+    name: 'Hyundai Grandeur',
+    engine: '3.0',
+    transmission: Transmission.AUTO,
+    fuel: Fuel.LPG,
+    year: 2014,
+    pricePerDay: 45,
+    seats: 5,
+    features: ['S-Line Package', 'Navigation', 'Bluetooth', 'Parking Sensors'],
+    images: [
+      'photos/hundai1.webp',
+      'photos/hundai2.webp',
+      'photos/hundai3.webp',
+      'photos/hundai4.webp'
     ],
     isAvailable: true,
     category: 'Premium'
@@ -58,9 +77,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['7 Seats', 'AWD', 'Luxury Interior', 'Safety Tech'],
     images: [
-      'photos/Passat Sel 1.jpeg',
-      'photos/Passat Sel 2.jpeg',
-      'photos/Passat Sel 3.jpeg'
+      'photos/Passat Sel 1.webp',
+      'photos/Passat Sel 2.webp',
+      'photos/Passat Sel 3.webp'
     ],
     isAvailable: true,
     category: 'SUV'
@@ -76,9 +95,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Automatic', 'Climate Control', 'Economic', 'Compact'],
     images: [
-      'photos/Golf 6 Blue(1).jpg',
-      'photos/Golf 6 Blue(2).jpg',
-      'photos/Golf 6 Blue(3).jpg'
+      'photos/Golf 6 Blue(1).webp',
+      'photos/Golf 6 Blue(2).webp',
+      'photos/Golf 6 Blue(3).webp'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -94,9 +113,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Manual', 'Very Economic', 'Easy to Drive', 'Reliable'],
     images: [
-      'photos/Golf 6 Black(1).jpg',
-      'photos/Golf 6 Black(2).jpg',
-      'photos/Golf 6 Black(3).jpg'
+      'photos/Golf 6 Black(1).webp',
+      'photos/Golf 6 Black(2).webp',
+      'photos/Golf 6 Black(3).webp'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -112,9 +131,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Huge Trunk', 'Automatic', 'Comfortable', 'Fuel Efficient'],
     images: [
-      'photos/Skoda(1).jpg',
-      'photos/Skoda(2).jpg',
-      'photos/Skoda(3).jpg'
+      'photos/Skoda(1).webp',
+      'photos/Skoda(2).webp',
+      'photos/Skoda(3).webp'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -130,9 +149,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Automatic', 'Sedan Comfort', 'Large Interior', 'Economic'],
     images: [
-      'photos/Jetta(1).jpg',
-      'photos/Jetta(2).jpg',
-      'photos/Jetta(3).jpg'
+      'photos/Jetta(1).webp',
+      'photos/Jetta(2).webp',
+      'photos/Jetta(3).webp'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -148,9 +167,9 @@ export const FLEET: Car[] = [
     seats: 4,
     features: ['Manual', 'Economic'],
     images: [
-      'photos/polo 1.jpg',
-      'photos/polo 2.jpg',
-      'photos/polo 3.jpg'
+      'photos/polo 1.webp',
+      'photos/polo 2.webp',
+      'photos/polo 3.webp'
     ],
     isAvailable: true,
     category: 'Standard'

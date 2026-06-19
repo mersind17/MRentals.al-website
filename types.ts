@@ -12,7 +12,8 @@ export enum Transmission {
 export enum Fuel {
   DIESEL = 'Diesel',
   PETROL = 'Petrol',
-  HYBRID = 'Hybrid'
+  HYBRID = 'Hybrid',
+  LPG = '100% LPG'
 }
 
 export interface Car {
