@@ -36,7 +36,7 @@ export const FLEET: Car[] = [
     transmission: Transmission.AUTO,
     fuel: Fuel.DIESEL,
     year: 2013,
-    pricePerDay: 50,
+    pricePerDay: 55,
     seats: 5,
     features: ['S-Line Package', 'Navigation', 'Bluetooth', 'Parking Sensors'],
     images: [
@@ -73,7 +73,7 @@ export const FLEET: Car[] = [
     transmission: Transmission.AUTO,
     fuel: Fuel.DIESEL,
     year: 2015,
-    pricePerDay: 40,
+    pricePerDay: 45,
     seats: 5,
     features: ['7 Seats', 'AWD', 'Luxury Interior', 'Safety Tech'],
     images: [
@@ -145,7 +145,7 @@ export const FLEET: Car[] = [
     transmission: Transmission.AUTO,
     fuel: Fuel.DIESEL,
     year: 2013,
-    pricePerDay: 35,
+    pricePerDay: 40,
     seats: 5,
     features: ['Automatic', 'Sedan Comfort', 'Large Interior', 'Economic'],
     images: [
