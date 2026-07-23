@@ -44,10 +44,14 @@ const Hero: React.FC<HeroProps> = ({ t }) => {
       {/* Background Image with Parallax + Ken Burns */}
       <div className="absolute inset-0" ref={bgRef}>
         <picture>
-          <source srcSet="photos/Audi%20A5(1).webp" type="image/webp" />
+          <source
+            srcSet="photos/audi-a5-1-1280.webp 1280w, photos/audi-a5-1-1920.webp 1920w"
+            sizes="100vw"
+            type="image/webp"
+          />
           <img
-            src="photos/Audi A5(1).jpg"
-            alt="Luxury car rental in Albania - MRentals"
+            src="photos/audi-a5-1-800.jpg"
+            alt="Makina me qera në Shqipëri - MRentals"
             className="w-full h-full object-cover animate-[kenburns_20s_ease-in-out_infinite]"
             style={{ transform: `scale(1.1) translateY(${scrollY * 0.3}px)` }}
             fetchPriority="high"
@@ -68,7 +72,7 @@ const Hero: React.FC<HeroProps> = ({ t }) => {
             style={{ transitionDelay: '100ms' }}
           >
             <span className="w-2.5 h-2.5 bg-[#acc8a2] rounded-full animate-pulse"></span>
-            <span className="text-[#acc8a2] text-[11px] font-black uppercase tracking-[0.25em]">New Fleet 2026 Arrived</span>
+            <span className="text-[#acc8a2] text-[11px] font-black uppercase tracking-[0.25em]">{t('hero_badge')}</span>
           </div>
 
           {/* Main Title */}
@@ -118,7 +122,7 @@ const Hero: React.FC<HeroProps> = ({ t }) => {
         className={`absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 ${fadeUp(0)}`}
         style={{ transitionDelay: '800ms' }}
       >
-        <span className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Scroll</span>
+        <span className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">{t('hero_scroll')}</span>
         <div className="w-px h-8 bg-gradient-to-b from-white/30 to-transparent animate-pulse"></div>
       </div>
 

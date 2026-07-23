@@ -40,15 +40,17 @@ const CarCard: React.FC<CarCardProps> = ({ car, t }) => {
       <div className="relative h-72 overflow-hidden bg-black/20">
         <picture>
           <source
-            srcSet={car.images[currentImageIndex].replace(/\.(jpg|jpeg|png)$/i, '.webp').replace(/ /g, '%20')}
+            srcSet={`${car.images[currentImageIndex]}-800.webp 800w, ${car.images[currentImageIndex]}-1600.webp 1600w`}
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             type="image/webp"
           />
           <img
-            src={car.images[currentImageIndex]}
-            alt={`${car.name} view ${currentImageIndex + 1}`}
+            src={`${car.images[currentImageIndex]}-800.jpg`}
+            alt={`${car.name} ${car.year} me qera - MRentals`}
             className="w-full h-full object-cover transition-all duration-700 ease-out"
             style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
             loading="lazy"
+            decoding="async"
             width={800}
             height={600}
           />

@@ -1,20 +1,40 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# MRentals.al — Makina me Qera
 
-# Run and deploy your AI Studio app
+Faqja zyrtare e biznesit **MRentals**, shërbim i makinave me qera me bazë në **Elbasan**, që shërben edhe **Tiranën** dhe **Aeroportin Ndërkombëtar të Tiranës (Rinas / TIA)**.
 
-This contains everything you need to run your app locally.
+- **Website:** https://mrentals.al
+- **Rezervime:** vetëm përmes WhatsApp (+355 69 516 9873)
+- **Instagram:** [@mrentals_al](https://www.instagram.com/mrentals_al)
 
-View your app in AI Studio: https://ai.studio/apps/drive/1ROro_FWrxQOmhAixDa_QoyroxJ0jmALw
+## Stack
 
-## Run Locally
+Vite 6 + React 19 + TypeScript + Tailwind CSS v4. Single-page app, dygjuhëshe (Shqip / English) me toggle në client. Deploy në Vercel.
 
-**Prerequisites:**  Node.js
+## Zhvillimi lokal
 
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # output në dist/
+npm run preview    # preview i build-it
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Pipeline i imazheve
+
+Origjinalet e fotove qëndrojnë në `photos/` (nuk deployohen). Skedarët e optimizuar për web gjenerohen në `public/photos/` me sharp:
+
+```bash
+npm run optimize:images    # resize + webp (800/1600w karta, 1280/1920w hero) + jpg fallback
+npm run prepare:brand      # logo (trim+transparent), favicons, og-image — vetëm kur ndryshon logoja
+```
+
+Shto foto të reja në `public/photos/` (si burim JPEG/JPG), pastaj rifresko `optimize:images`. Emrat e output-it janë të slugifikuar (pa hapësira) që `srcset` të jetë i vlefshëm.
+
+## Rregullat e biznesit (të rëndësishme)
+
+- **Sigurimi i plotë (kasko) është OPSION** — asnjëherë mos shkruaj "sigurim i përfshirë".
+- Çmimet: 25–55 €/ditë. Rezervimi bëhet vetëm me WhatsApp (pa backend).
+
+## Deploy
+
+Push në `main` → Vercel bën rebuild automatik. Domaini `mrentals.al` është canonical për SEO (sitemap, robots, JSON-LD janë konfiguruar për këtë domain).

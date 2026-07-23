@@ -39,10 +39,11 @@ export const FLEET: Car[] = [
     pricePerDay: 55,
     seats: 5,
     features: ['S-Line Package', 'Navigation', 'Bluetooth', 'Parking Sensors'],
+    // images = path bazë pa suffix; CarCard/Hero ndërtojnë -800/-1600.webp + -800.jpg (shih scripts/optimize-images.mjs)
     images: [
-      'photos/Audi A5(1).webp',
-      'photos/Audi A5(3).webp',
-      'photos/Audi A5(2).webp'
+      'photos/audi-a5-1',
+      'photos/audi-a5-3',
+      'photos/audi-a5-2'
     ],
     isAvailable: true,
     category: 'Premium'
@@ -56,18 +57,18 @@ export const FLEET: Car[] = [
     year: 2014,
     pricePerDay: 45,
     seats: 5,
-    features: ['S-Line Package', 'Navigation', 'Bluetooth', 'Parking Sensors'],
+    features: ['LPG Economy', 'Leather Interior', 'Bluetooth', 'Parking Sensors'],
     images: [
-      'photos/hundai1.webp',
-      'photos/hundai2.webp',
-      'photos/hundai3.webp',
-      'photos/hundai4.webp'
+      'photos/hyundai-1',
+      'photos/hyundai-2',
+      'photos/hyundai-3',
+      'photos/hyundai-4'
     ],
     isAvailable: true,
     category: 'Premium'
   },
   {
-    id: 'volvo-xc90',
+    id: 'vw-passat-sel',
     name: 'VW PASSAT SEL',
     engine: '2.0',
     transmission: Transmission.AUTO,
@@ -75,14 +76,14 @@ export const FLEET: Car[] = [
     year: 2015,
     pricePerDay: 45,
     seats: 5,
-    features: ['7 Seats', 'AWD', 'Luxury Interior', 'Safety Tech'],
+    features: ['Automatic', 'Leather Interior', 'Navigation', 'Parking Sensors'],
     images: [
-      'photos/Passat Sel 1.webp',
-      'photos/Passat Sel 2.webp',
-      'photos/Passat Sel 3.webp'
+      'photos/passat-1',
+      'photos/passat-2',
+      'photos/passat-3'
     ],
     isAvailable: true,
-    category: 'SUV'
+    category: 'Premium'
   },
   {
     id: 'vw-golf-6-auto',
@@ -95,9 +96,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Automatic', 'Climate Control', 'Economic', 'Compact'],
     images: [
-      'photos/Golf 6 Blue(1).webp',
-      'photos/Golf 6 Blue(2).webp',
-      'photos/Golf 6 Blue(3).webp'
+      'photos/golf-blue-1',
+      'photos/golf-blue-2',
+      'photos/golf-blue-3'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -113,9 +114,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Manual', 'Very Economic', 'Easy to Drive', 'Reliable'],
     images: [
-      'photos/Golf 6 Black(1).webp',
-      'photos/Golf 6 Black(2).webp',
-      'photos/Golf 6 Black(3).webp'
+      'photos/golf-black-1',
+      'photos/golf-black-2',
+      'photos/golf-black-3'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -131,9 +132,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Huge Trunk', 'Automatic', 'Comfortable', 'Fuel Efficient'],
     images: [
-      'photos/Skoda(1).webp',
-      'photos/Skoda(2).webp',
-      'photos/Skoda(3).webp'
+      'photos/skoda-1',
+      'photos/skoda-2',
+      'photos/skoda-3'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -149,9 +150,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Automatic', 'Sedan Comfort', 'Large Interior', 'Economic'],
     images: [
-      'photos/Jetta(1).webp',
-      'photos/Jetta(2).webp',
-      'photos/Jetta(3).webp'
+      'photos/jetta-1',
+      'photos/jetta-2',
+      'photos/jetta-3'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -167,9 +168,9 @@ export const FLEET: Car[] = [
     seats: 4,
     features: ['Manual', 'Economic'],
     images: [
-      'photos/polo 1.webp',
-      'photos/polo 2.webp',
-      'photos/polo 3.webp'
+      'photos/polo-1',
+      'photos/polo-2',
+      'photos/polo-3'
     ],
     isAvailable: true,
     category: 'Standard'
@@ -212,7 +213,7 @@ export const TRANSLATIONS: TranslationSet = {
   why_support_desc: { en: 'Our team is always ready to help you and provide support 24/7.', sq: 'Ekipi ynë është gjithmonë i gatshëm t\'ju ndihmojë dhe t\'ju ofrojë mbështetje 24/7.' },
   review_title: { en: 'Google Customer Reviews', sq: 'Vlerësimet nga Klientët' },
   review_official_badge: { en: 'Official Reviews', sq: 'Vlerësime Zyrtare' },
-  review_summary_stat: { en: 'Based on 30+ local reviews', sq: 'Bazuar në mbi 30+ vlerësime reale' },
+  review_summary_stat: { en: 'Based on 43 Google reviews', sq: 'Bazuar në 43 vlerësime në Google' },
   review_verified_guide: { en: 'Verified Local Guide', sq: 'Udhërrëfyes Lokal' },
   review_highly_recommended: { en: 'Highly Recommended', sq: 'Rekomandohet Shumë' },
   review_write_btn: { en: 'Write a Review', sq: 'Shkruaj një Vlerësim' },
@@ -227,11 +228,8 @@ export const TRANSLATIONS: TranslationSet = {
   contact_navigation_btn: { en: 'Start Navigation', sq: 'Fillo Navigimin' },
   footer_premium_services: { en: 'Premium Services', sq: 'Shërbime Premium' },
   footer_rights: { en: 'All rights reserved.', sq: 'Të gjitha të drejtat të rezervuara.' },
-  ai_assistant_btn: { en: 'Travel Concierge', sq: 'Asistenti i Udhëtimit' },
-  ai_assistant_placeholder: { en: 'Ask me anything about your trip to Albania...', sq: 'Më pyet për çdo gjë rreth udhëtimit tënd...' },
-  ai_concierge_title: { en: 'Concierge', sq: 'Konshierzh' },
-  ai_concierge_subtitle: { en: 'AI Powered', sq: 'AI Inteligjente' },
-  ai_concierge_welcome: { en: "Welcome to MRentals! I'm your travel assistant. How can I help with your trip?", sq: "Mirësevini në MRentals! Jam asistenti juaj virtual. Si mund t'ju ndihmoj me udhëtimin tuaj?" },
+  hero_badge: { en: 'New Fleet 2026 Arrived', sq: 'Flota e Re 2026 Mbërriti' },
+  hero_scroll: { en: 'Scroll', sq: 'Zbrit' },
 
   // SEO Content Blocks
   seo_title: { en: 'Car Rental Albania - Premium Services in Tirana and Elbasan', sq: 'Makina me Qera në Shqipëri - Shërbime Premium në Tiranë dhe Elbasan' },

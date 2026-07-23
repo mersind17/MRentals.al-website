@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({ lang, toggleLang, isScrolled, t }) => {
             aria-label="MRentals – Go to homepage"
             className={`flex items-center group transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-100'}`}
           >
-            <Logo className="h-4 sm:h-5" color="#ffffff" />
+            <Logo className="h-4 sm:h-5" />
           </a>
 
           {/* Desktop Nav */}
@@ -128,7 +128,7 @@ const Header: React.FC<HeaderProps> = ({ lang, toggleLang, isScrolled, t }) => {
 
         {/* Mobile Header (Repeated inside overlay for alignment) */}
         <div className="absolute top-0 left-0 right-0 py-8 px-6 flex justify-between items-center z-10">
-          <Logo className="h-4 sm:h-5" color="#ffffff" />
+          <Logo className="h-4 sm:h-5" />
           <div className="flex items-center space-x-3">
             <button
               onClick={toggleLang}
@@ -172,7 +172,7 @@ const Header: React.FC<HeaderProps> = ({ lang, toggleLang, isScrolled, t }) => {
               }`}
             style={{ transitionDelay: '500ms' }}
           >
-            <Logo className="h-5 sm:h-6" color="#ffffff" />
+            <Logo className="h-5 sm:h-6" />
           </div>
         </div>
       </div>

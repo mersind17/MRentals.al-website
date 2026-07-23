@@ -24,6 +24,7 @@ export interface Car {
   fuel: Fuel;
   year: number;
   pricePerDay: number;
+  // Path bazë pa suffix (p.sh. 'photos/audi-a5-1'); variantet -800/-1600.webp + -800.jpg gjenerohen nga scripts/optimize-images.mjs
   images: string[];
   seats: number;
   features: string[];
