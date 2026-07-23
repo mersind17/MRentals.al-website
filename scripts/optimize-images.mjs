@@ -1,5 +1,5 @@
 // Optimizon fotot e flotës për web: resize + webp (srcset) + jpg fallback.
-// Burimi: public/photos/*.{jpg,jpeg}. Output: public/photos/<slug>-<width>.<ext>.
+// Burimi: photos/*.{jpg,jpeg} (origjinalet). Output: public/photos/<slug>-<width>.<ext>.
 // Përdorim: `npm run optimize:images` ose `node scripts/optimize-images.mjs --clean`.
 // Emrat e output-it duhet të përputhen me path-et bazë në constants.ts (FLEET.images).
 import sharp from 'sharp';
@@ -9,12 +9,15 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const photosDir = join(__dirname, '..', 'public', 'photos');
+const sourceDir = join(__dirname, '..', 'photos'); // origjinalet (nuk deployohen)
+const photosDir = join(__dirname, '..', 'public', 'photos'); // output-i i optimizuar
 
 const CARD_WIDTHS = [800, 1600];
-const HERO_WIDTHS = [1280, 1920];
+// Hero-ja mbulon gjithë ekranin: duhen edhe masa të vogla që telefonat të mos
+// shkarkojnë një imazh 1280w (~415KB) kur u mjaftojnë ~120KB.
+const HERO_WIDTHS = [640, 960, 1280, 1920];
 
-// slug (bazë e output-it) → skedar burimi në public/photos/. `hero: true` shton edhe masat 1280/1920.
+// slug (bazë e output-it) → skedar burimi në photos/. `hero: true` shton edhe masat e mëdha.
 const SOURCES = [
   { slug: 'audi-a5-1', src: 'Audi A5(1).jpg', hero: true },
   { slug: 'audi-a5-2', src: 'Audi A5(2).jpg' },
@@ -55,7 +58,7 @@ async function main() {
   let totalOut = 0;
 
   for (const { slug, src, hero } of SOURCES) {
-    const input = join(photosDir, src);
+    const input = join(sourceDir, src);
     try {
       await stat(input);
     } catch {

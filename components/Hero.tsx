@@ -46,10 +46,13 @@ const Hero: React.FC<HeroProps> = ({ t }) => {
     <section id="home" className="relative h-[100vh] flex items-center justify-center overflow-hidden pt-20">
       {/* Background Image with Parallax + Ken Burns */}
       <div className="absolute inset-0" ref={bgRef}>
+        {/* Foto sfondi nën gradientë të errët: në telefon kërkojmë qëllimisht një masë
+            më të vogël (50vw) — kursen ~300KB pa ndryshim të dukshëm.
+            `sizes` DUHET identike me `imagesizes` te preload-i në index.html. */}
         <picture>
           <source
-            srcSet="/photos/audi-a5-1-1280.webp 1280w, /photos/audi-a5-1-1920.webp 1920w"
-            sizes="100vw"
+            srcSet="/photos/audi-a5-1-640.webp 640w, /photos/audi-a5-1-960.webp 960w, /photos/audi-a5-1-1280.webp 1280w, /photos/audi-a5-1-1920.webp 1920w"
+            sizes="(max-width: 768px) 50vw, 100vw"
             type="image/webp"
           />
           <img
