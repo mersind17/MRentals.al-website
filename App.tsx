@@ -1,26 +1,49 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Language } from './types';
-import { TRANSLATIONS, FLEET, REVIEWS } from './constants';
+import { TRANSLATIONS } from './constants';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import CarFleet from './components/CarFleet';
-import WhyUs from './components/WhyUs';
-import Reviews from './components/Reviews';
-import Contact from './components/Contact';
-import SEOSection from './components/SEOSection';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import ScrollProgress from './components/ScrollProgress';
+import Home from './pages/Home';
+import LocationPage from './pages/LocationPage';
+import CarPage from './pages/CarPage';
+import NotFound from './pages/NotFound';
 
+// Titujt e faqes kryesore per gjuhë (faqet e brendshme e vendosin vetë titullin).
+const HOME_TITLE = {
+  sq: 'MRentals | Makina me Qera në Elbasan, Tiranë dhe Aeroporti Rinas',
+  en: 'MRentals | Car Rental in Elbasan, Tirana and Rinas Airport',
+};
 
-const App: React.FC = () => {
+// Në ndërrim route: scroll lart, ose te seksioni nëse URL-ja ka hash.
+const RouteEffects: React.FC = () => {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(hash.slice(1));
+      if (el) {
+        const top = el.getBoundingClientRect().top - document.body.getBoundingClientRect().top - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+        return;
+      }
+    }
+    window.scrollTo({ top: 0 });
+  }, [pathname, hash]);
+
+  return null;
+};
+
+const AppShell: React.FC = () => {
   const [lang, setLang] = useState<Language>(() => {
     const saved = localStorage.getItem('pref_lang');
     return (saved as Language) || Language.SQ;
   });
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -30,11 +53,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     document.documentElement.lang = lang;
-  }, [lang]);
+    // Titullin e faqes kryesore e menaxhojmë këtu; faqet e brendshme kanë efektet e veta.
+    if (pathname === '/') document.title = HOME_TITLE[lang];
+  }, [lang, pathname]);
 
-  const t = useCallback((key: string) => {
-    return TRANSLATIONS[key]?.[lang] || key;
-  }, [lang, TRANSLATIONS]);
+  const t = useCallback((key: string) => TRANSLATIONS[key]?.[lang] || key, [lang]);
 
   const toggleLang = () => {
     const next = lang === Language.EN ? Language.SQ : Language.EN;
@@ -44,43 +67,32 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen selection:bg-yellow-400 selection:text-black font-sans overflow-x-hidden">
-      <Header
-        lang={lang}
-        toggleLang={toggleLang}
-        isScrolled={isScrolled}
-        t={t}
-      />
+      <RouteEffects />
+      <Header lang={lang} toggleLang={toggleLang} isScrolled={isScrolled} t={t} />
 
       <main className="overflow-x-hidden">
-        <Hero t={t} />
-
-        <div id="cars" className="scroll-mt-24">
-          <CarFleet lang={lang} t={t} fleet={FLEET} />
-        </div>
-
-        <div id="why-us" className="scroll-mt-24">
-          <WhyUs t={t} />
-        </div>
-
-        <div id="reviews" className="scroll-mt-24">
-          <Reviews t={t} reviews={REVIEWS} />
-        </div>
-
-        <div id="contact" className="scroll-mt-24">
-          <Contact t={t} />
-        </div>
-
-        {/* SEO Optimized Content Section */}
-        <SEOSection t={t} />
+        <Routes>
+          <Route path="/" element={<Home lang={lang} t={t} />} />
+          <Route path="/makina-me-qera-elbasan" element={<LocationPage lang={lang} t={t} />} />
+          <Route path="/makina-me-qera-tirane" element={<LocationPage lang={lang} t={t} />} />
+          <Route path="/makina-me-qera-rinas" element={<LocationPage lang={lang} t={t} />} />
+          <Route path="/makina/:slug" element={<CarPage lang={lang} t={t} />} />
+          <Route path="*" element={<NotFound t={t} />} />
+        </Routes>
       </main>
 
-      <Footer t={t} />
+      <Footer t={t} lang={lang} />
 
-      {/* Global floating elements */}
       <ScrollProgress />
       <ScrollToTop />
     </div>
   );
 };
+
+const App: React.FC = () => (
+  <BrowserRouter>
+    <AppShell />
+  </BrowserRouter>
+);
 
 export default App;

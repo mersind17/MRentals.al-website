@@ -7,6 +7,9 @@ interface ContactProps {
   t: (key: string) => string;
 }
 
+// Fjala e theksuar me jeshile te titulli — një per gjuhë (en: "Showroom", sq: "Sallonin").
+const HIGHLIGHT_WORDS = ['showroom', 'sallonin'];
+
 const Contact: React.FC<ContactProps> = ({ t }) => {
   const { ref: sectionRef, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
 
@@ -30,7 +33,7 @@ const Contact: React.FC<ContactProps> = ({ t }) => {
               {t('contact_showroom_title').split(' ').map((word, i) => (
                 <React.Fragment key={i}>
                   {i === 2 ? <br /> : ''}
-                  <span className={word.toLowerCase() === 'showroom' ? 'text-[#acc8a2]' : ''}>{word} </span>
+                  <span className={HIGHLIGHT_WORDS.includes(word.toLowerCase()) ? 'text-[#acc8a2]' : ''}>{word} </span>
                 </React.Fragment>
               ))}
             </h2>

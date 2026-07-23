@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "optimize:images": "node scripts/optimize-images.mjs",
     "prepare:brand": "node scripts/prepare-brand.mjs"
   },
   "dependencies": {
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.0",

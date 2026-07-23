@@ -7,6 +7,7 @@
     <title>MRentals | Makina me Qera në Elbasan, Tiranë dhe Aeroporti Rinas</title>
     <meta name="description"
         content="Rezervoni makina me qera në Elbasan, Tiranë dhe Aeroportin e Rinasit (TIA). Flotë moderne, çmime transparente 25–55€/ditë dhe shërbim 24/7 me MRentals.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="https://mrentals.al/">
 
     <!--
@@ -66,6 +67,7 @@
           "@type": "AutoRental",
           "@id": "https://mrentals.al/#business",
           "name": "MRentals",
+          "alternateName": "MRentals.al",
           "url": "https://mrentals.al/",
           "image": "https://mrentals.al/og-image.jpg",
           "logo": "https://mrentals.al/icon-512.png",
@@ -77,6 +79,12 @@
             "addressLocality": "Elbasan",
             "addressCountry": "AL"
           },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 41.1125,
+            "longitude": 20.0822
+          },
+          "hasMap": "https://maps.app.goo.gl/m6shU3n1ZKna6yLi7",
           "areaServed": [
             { "@type": "City", "name": "Elbasan" },
             { "@type": "City", "name": "Tiranë" },
@@ -96,7 +104,27 @@
             "@type": "AggregateRating",
             "ratingValue": "5.0",
             "reviewCount": "43"
-          }
+          },
+          "review": [
+            {
+              "@type": "Review",
+              "author": { "@type": "Person", "name": "Adelina Ruci" },
+              "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+              "reviewBody": "The best service I've received in a long time. Very comfortable cars reasonable price and more important very nice and polite people. Highly recommended"
+            },
+            {
+              "@type": "Review",
+              "author": { "@type": "Person", "name": "Adel Redhwan" },
+              "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+              "reviewBody": "Ailemle birlikte birkaç günlüğüne Elbasan şehrindeydim ve MRentals'tan kiraladığım arabadan çok memnun kaldım. Uygun fiyat ve konforlu"
+            },
+            {
+              "@type": "Review",
+              "author": { "@type": "Person", "name": "unejs duka" },
+              "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+              "reviewBody": "Great prices and very comfortable cars"
+            }
+          ]
         },
         {
           "@type": "OfferCatalog",
@@ -111,6 +139,42 @@
             { "@type": "Offer", "price": "30", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "30", "priceCurrency": "EUR", "unitCode": "DAY" }, "itemOffered": { "@type": "Car", "name": "Skoda Octavia", "modelDate": "2009", "vehicleTransmission": "Automatic", "fuelType": "Diesel", "seatingCapacity": "5" } },
             { "@type": "Offer", "price": "40", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "40", "priceCurrency": "EUR", "unitCode": "DAY" }, "itemOffered": { "@type": "Car", "name": "VW Jetta", "modelDate": "2013", "vehicleTransmission": "Automatic", "fuelType": "Diesel", "seatingCapacity": "5" } },
             { "@type": "Offer", "price": "25", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "25", "priceCurrency": "EUR", "unitCode": "DAY" }, "itemOffered": { "@type": "Car", "name": "VW Polo", "modelDate": "2008", "vehicleTransmission": "Manual", "fuelType": "Diesel", "seatingCapacity": "4" } }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://mrentals.al/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Si mund të rezervoj një makinë?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Rezervimi bëhet i gjithi përmes WhatsApp në +355 69 516 9873. Na dërgoni datat dhe makinën që dëshironi dhe ju konfirmojmë disponueshmërinë menjëherë." }
+            },
+            {
+              "@type": "Question",
+              "name": "Çfarë dokumentesh më duhen?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Një patentë e vlefshme dhe një dokument identifikimi (kartë identiteti ose pasaportë). Për detaje mbi rastin tuaj konkret, na shkruani në WhatsApp." }
+            },
+            {
+              "@type": "Question",
+              "name": "A bëni dorëzim në Aeroportin e Rinasit?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Po. Ofrojmë marrje dhe dorëzim në Aeroportin Ndërkombëtar të Tiranës (TIA) 24/7, si dhe kudo në Tiranë e Elbasan. Na tregoni orarin e fluturimit dhe ju presim atje." }
+            },
+            {
+              "@type": "Question",
+              "name": "Sa kushton qeraja në ditë?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Çmimet variojnë nga 25€ deri në 55€ në ditë, në varësi të makinës. Çmimet janë transparente pa kosto të fshehura." }
+            },
+            {
+              "@type": "Question",
+              "name": "A ofrohet sigurim i plotë (kasko)?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Sigurimi i plotë (kasko) ofrohet si opsion me pagesë shtesë — nuk është i përfshirë si standard. Na kontaktoni në WhatsApp dhe ju shpjegojmë opsionet." }
+            },
+            {
+              "@type": "Question",
+              "name": "A ka kërkesa të tjera (depozitë, moshë minimale)?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Kushtet mund të ndryshojnë sipas mjetit dhe periudhës së qerasë. Na shkruani në WhatsApp dhe ju dërgojmë menjëherë kushtet e plota." }
+            }
           ]
         }
       ]
@@ -139,15 +203,36 @@
 
             <h3 style="font-weight:700;margin-bottom:8px">Flota Jonë</h3>
             <ul style="color:#c9d6cf;margin-bottom:24px;padding-left:20px">
-                <li>Audi A5 (2013) — 55€/ditë</li>
-                <li>Hyundai Grandeur (2014) — 45€/ditë</li>
-                <li>VW Passat SEL (2015) — 45€/ditë</li>
-                <li>VW Jetta (2013) — 40€/ditë</li>
-                <li>VW Golf 6 (2013) — 35€/ditë</li>
-                <li>VW Golf 6 (2009) — 30€/ditë</li>
-                <li>Skoda Octavia (2009) — 30€/ditë</li>
-                <li>VW Polo (2008) — 25€/ditë</li>
+                <li><a href="/makina/audi-a5" style="color:#acc8a2">Audi A5</a> (2013) — 55€/ditë</li>
+                <li><a href="/makina/hyundai-grandeur" style="color:#acc8a2">Hyundai Grandeur</a> (2014) — 45€/ditë</li>
+                <li><a href="/makina/vw-passat-sel" style="color:#acc8a2">VW Passat SEL</a> (2015) — 45€/ditë</li>
+                <li><a href="/makina/vw-jetta" style="color:#acc8a2">VW Jetta</a> (2013) — 40€/ditë</li>
+                <li><a href="/makina/vw-golf-6-auto" style="color:#acc8a2">VW Golf 6</a> (2013) — 35€/ditë</li>
+                <li><a href="/makina/vw-golf-6-manual" style="color:#acc8a2">VW Golf 6</a> (2009) — 30€/ditë</li>
+                <li><a href="/makina/skoda-octavia" style="color:#acc8a2">Skoda Octavia</a> (2009) — 30€/ditë</li>
+                <li><a href="/makina/vw-polo" style="color:#acc8a2">VW Polo</a> (2008) — 25€/ditë</li>
             </ul>
+
+            <h3 style="font-weight:700;margin-bottom:8px">Lokacionet</h3>
+            <ul style="color:#c9d6cf;margin-bottom:24px;padding-left:20px">
+                <li><a href="/makina-me-qera-elbasan" style="color:#acc8a2">Makina me qera në Elbasan</a></li>
+                <li><a href="/makina-me-qera-tirane" style="color:#acc8a2">Makina me qera në Tiranë</a></li>
+                <li><a href="/makina-me-qera-rinas" style="color:#acc8a2">Makina me qera Aeroporti Rinas (TIA)</a></li>
+            </ul>
+
+            <h3 style="font-weight:700;margin-bottom:8px">Pyetjet më të Shpeshta</h3>
+            <dl style="color:#c9d6cf;margin-bottom:24px">
+                <dt style="font-weight:700;margin-top:12px">Si mund të rezervoj një makinë?</dt>
+                <dd style="margin:4px 0 0 0">Përmes WhatsApp në +355 69 516 9873 — ju konfirmojmë disponueshmërinë menjëherë.</dd>
+                <dt style="font-weight:700;margin-top:12px">Çfarë dokumentesh më duhen?</dt>
+                <dd style="margin:4px 0 0 0">Një patentë e vlefshme dhe një dokument identifikimi (ID ose pasaportë).</dd>
+                <dt style="font-weight:700;margin-top:12px">A bëni dorëzim në Aeroportin e Rinasit?</dt>
+                <dd style="margin:4px 0 0 0">Po — marrje dhe dorëzim në TIA 24/7, si dhe kudo në Tiranë e Elbasan.</dd>
+                <dt style="font-weight:700;margin-top:12px">Sa kushton qeraja në ditë?</dt>
+                <dd style="margin:4px 0 0 0">Nga 25€ deri 55€ në ditë sipas makinës, pa kosto të fshehura.</dd>
+                <dt style="font-weight:700;margin-top:12px">A ofrohet sigurim i plotë (kasko)?</dt>
+                <dd style="margin:4px 0 0 0">Kasko ofrohet si opsion me pagesë shtesë — nuk është i përfshirë si standard.</dd>
+            </dl>
 
             <p style="color:#c9d6cf">Rezervoni sot përmes WhatsApp:
                 <a href="https://wa.me/355695169873" style="color:#acc8a2">+355 69 516 9873</a> ·

@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Car } from '../types';
 import { WHATSAPP_NUMBER } from '../constants';
 
@@ -38,6 +39,12 @@ const CarCard: React.FC<CarCardProps> = ({ car, t }) => {
     >
       {/* Image Container / Gallery */}
       <div className="relative h-72 overflow-hidden bg-black/20">
+        {/* Klikimi mbi foto hap faqen e makinës (SEO + detaje) */}
+        <Link
+          to={`/makina/${car.id}`}
+          aria-label={`${car.name} — ${car.year}`}
+          className="absolute inset-0 z-10"
+        />
         <picture>
           <source
             srcSet={`${car.images[currentImageIndex]}-800.webp 800w, ${car.images[currentImageIndex]}-1600.webp 1600w`}
@@ -57,7 +64,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, t }) => {
         </picture>
 
         {/* Gallery Navigation Arrows */}
-        <div className={`absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between items-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0 md:opacity-0 lg:group-hover:opacity-100 lg:group-active:opacity-100'}`}>
+        <div className={`absolute inset-x-4 top-1/2 -translate-y-1/2 z-20 flex justify-between items-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0 md:opacity-0 lg:group-hover:opacity-100 lg:group-active:opacity-100'}`}>
           <button
             onClick={prevImage}
             aria-label="Previous image"
@@ -96,7 +103,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, t }) => {
       <div className="p-8 flex-grow flex flex-col">
         <div className="flex justify-between items-start mb-6">
           <h3 className="text-2xl font-black group-hover:text-[#acc8a2] group-active:text-[#acc8a2] transition-colors leading-tight max-w-[70%]">
-            {car.name}
+            <Link to={`/makina/${car.id}`}>{car.name}</Link>
           </h3>
           <div className="text-right">
             <div className="text-3xl font-black text-white group-hover:text-[#acc8a2] group-active:text-[#acc8a2] transition-colors tracking-tighter">

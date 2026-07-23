@@ -46,10 +46,14 @@ export const FLEET: Car[] = [
       'photos/audi-a5-2'
     ],
     isAvailable: true,
-    category: 'Premium'
+    category: 'Premium',
+    seoText: {
+      sq: 'Audi A5 2.0 TDI automatik është zgjedhja jonë premium për ata që duan stil dhe komoditet. Me paketë S-Line, navigim, sensorë parkimi dhe motor diesel ekonomik, është ideale për udhëtime pune në Tiranë ose rrugë të gjata nëpër Shqipëri. Merret me qera në Elbasan, Tiranë ose direkt në Aeroportin e Rinasit.',
+      en: 'The Audi A5 2.0 TDI automatic is our premium choice for those who want style and comfort. With S-Line package, navigation, parking sensors and an economical diesel engine, it is ideal for business trips in Tirana or long drives across Albania. Available for rent in Elbasan, Tirana or directly at Tirana Airport.'
+    }
   },
   {
-    id: 'Hyundai-grandeur',
+    id: 'hyundai-grandeur',
     name: 'HYUNDAI GRANDEUR',
     engine: '3.0',
     transmission: Transmission.AUTO,
@@ -65,7 +69,11 @@ export const FLEET: Car[] = [
       'photos/hyundai-4'
     ],
     isAvailable: true,
-    category: 'Premium'
+    category: 'Premium',
+    seoText: {
+      sq: 'Hyundai Grandeur 3.0 me sistem 100% LPG bashkon hapësirën e një sedani të madh me kosto shumë të ulët karburanti. Interier lëkure, kondicioner, sensorë parkimi dhe kambio automatike — perfekte për familje ose grupe që udhëtojnë gjatë nëpër Shqipëri pa shpenzime të larta.',
+      en: 'The Hyundai Grandeur 3.0 with a 100% LPG system combines the space of a large sedan with very low fuel costs. Leather interior, air conditioning, parking sensors and automatic transmission — perfect for families or groups travelling long distances across Albania without high running costs.'
+    }
   },
   {
     id: 'vw-passat-sel',
@@ -83,7 +91,11 @@ export const FLEET: Car[] = [
       'photos/passat-3'
     ],
     isAvailable: true,
-    category: 'Premium'
+    category: 'Premium',
+    seoText: {
+      sq: 'VW Passat SEL 2.0 TDI automatik është sedani klasik i biznesit: bagazh i madh, interier lëkure, navigim dhe konsum i ulët diesel. Zgjedhja më e kërkuar për ata që udhëtojnë shpesh midis Elbasanit, Tiranës dhe aeroportit, ose për familje me bagazh të shumtë.',
+      en: 'The VW Passat SEL 2.0 TDI automatic is the classic business sedan: large boot, leather interior, navigation and low diesel consumption. The most requested choice for those travelling frequently between Elbasan, Tirana and the airport, or for families with plenty of luggage.'
+    }
   },
   {
     id: 'vw-golf-6-auto',
@@ -101,7 +113,11 @@ export const FLEET: Car[] = [
       'photos/golf-blue-3'
     ],
     isAvailable: true,
-    category: 'Standard'
+    category: 'Standard',
+    seoText: {
+      sq: 'VW Golf 6 2.0 TDI automatik është ekuilibri perfekt midis rehatisë dhe ekonomisë. Kambio automatike për trafikun e Tiranës, kondicioner dhe konsum shumë i ulët diesel. Një nga makinat tona më të kërkuara për qera afatgjatë me çmim 35€ në ditë.',
+      en: 'The VW Golf 6 2.0 TDI automatic is the perfect balance between comfort and economy. Automatic transmission for Tirana traffic, air conditioning and very low diesel consumption. One of our most requested cars for longer rentals at 35€ per day.'
+    }
   },
   {
     id: 'vw-golf-6-manual',
@@ -119,7 +135,11 @@ export const FLEET: Car[] = [
       'photos/golf-black-3'
     ],
     isAvailable: true,
-    category: 'Standard'
+    category: 'Standard',
+    seoText: {
+      sq: 'VW Golf 6 1.6 TDI manual është opsioni ynë më ekonomik në kategorinë kompakte. I lehtë për t\'u drejtuar, i besueshëm dhe me konsum minimal karburanti — zgjedhja ideale për ata që njohin kambion manuale dhe duan të kursejnë gjatë udhëtimit.',
+      en: 'The VW Golf 6 1.6 TDI manual is our most economical option in the compact category. Easy to drive, reliable and with minimal fuel consumption — the ideal choice for those comfortable with a manual gearbox who want to keep travel costs down.'
+    }
   },
   {
     id: 'skoda-octavia',
@@ -137,7 +157,11 @@ export const FLEET: Car[] = [
       'photos/skoda-3'
     ],
     isAvailable: true,
-    category: 'Standard'
+    category: 'Standard',
+    seoText: {
+      sq: 'Skoda Octavia 1.9 TDI automatike njihet për bagazhin e saj të jashtëzakonshëm — një nga më të mëdhenjtë në klasë. Komode, e qëndrueshme dhe ekonomike, është zgjedhja e preferuar për pushime familjare ose udhëtime me shumë valixhe drejt bregdetit shqiptar.',
+      en: 'The Skoda Octavia 1.9 TDI automatic is known for its exceptional boot space — one of the largest in its class. Comfortable, durable and economical, it is the preferred choice for family holidays or trips to the Albanian coast with plenty of luggage.'
+    }
   },
   {
     id: 'vw-jetta',
@@ -155,7 +179,11 @@ export const FLEET: Car[] = [
       'photos/jetta-3'
     ],
     isAvailable: true,
-    category: 'Standard'
+    category: 'Standard',
+    seoText: {
+      sq: 'VW Jetta 1.6 TDI automatike ofron rehatinë e një sedani me çmimin e një makine kompakte. Hapësirë e bollshme për pesë persona, bagazh i madh dhe kambio automatike — e përshtatshme si për qytet ashtu edhe për autostradë.',
+      en: 'The VW Jetta 1.6 TDI automatic offers sedan comfort at a compact car price. Generous space for five people, a large boot and automatic transmission — equally suited to city driving and motorway trips.'
+    }
   },
   {
     id: 'vw-polo',
@@ -173,7 +201,11 @@ export const FLEET: Car[] = [
       'photos/polo-3'
     ],
     isAvailable: true,
-    category: 'Standard'
+    category: 'Standard',
+    seoText: {
+      sq: 'VW Polo 1.4 TDI manual është makina jonë më e lirë, me vetëm 25€ në ditë. Kompakte dhe e lehtë për parkim në rrugët e ngushta të qytetit, me konsum karburanti minimal. Zgjedhja e duhur për çifte ose udhëtarë individualë që duan lëvizje ekonomike.',
+      en: 'The VW Polo 1.4 TDI manual is our most affordable car at just 25€ per day. Compact and easy to park on narrow city streets, with minimal fuel consumption. The right choice for couples or solo travellers who want economical mobility.'
+    }
   }
 ];
 
@@ -190,7 +222,7 @@ export const TRANSLATIONS: TranslationSet = {
   fleet_title: { en: 'Elite Fleet', sq: 'Flota Elite' },
   fleet_subtitle: { en: 'Selected quality and economy vehicles for your ultimate comfort.', sq: 'Automjete cilësore dhe ekonomike të përzgjedhura për rehatinë tuaj maksimale.' },
   fleet_discover_title: { en: 'Discover', sq: 'Zbuloni' },
-  fleet_discover_fleet: { en: 'Fleet Our', sq: 'Flotën Tonë' },
+  fleet_discover_fleet: { en: 'Our Fleet', sq: 'Flotën Tonë' },
   fleet_airport_service: { en: 'Pick-up and Drop-off to TIA (Tirana International Airport)', sq: 'Marrja dhe dorëzimi në Aeroportin e Tiranës (TIA)' },
   fleet_airport_transfer: { en: 'Airport Transfer', sq: 'Transfertë Aeroporti' },
   fleet_available_24_7: { en: 'Available 24/7', sq: 'Disponueshëm 24/7' },
@@ -228,8 +260,53 @@ export const TRANSLATIONS: TranslationSet = {
   contact_navigation_btn: { en: 'Start Navigation', sq: 'Fillo Navigimin' },
   footer_premium_services: { en: 'Premium Services', sq: 'Shërbime Premium' },
   footer_rights: { en: 'All rights reserved.', sq: 'Të gjitha të drejtat të rezervuara.' },
-  hero_badge: { en: 'New Fleet 2026 Arrived', sq: 'Flota e Re 2026 Mbërriti' },
-  hero_scroll: { en: 'Scroll', sq: 'Zbrit' },
+  // Footer
+  footer_tagline: {
+    en: 'Car rental in Elbasan, Tirana and Tirana International Airport (Rinas). Modern fleet, transparent pricing.',
+    sq: 'Makina me qera në Elbasan, Tiranë dhe Aeroportin e Rinasit (TIA). Flotë moderne, çmime transparente.'
+  },
+  footer_links_title: { en: 'Navigation', sq: 'Navigim' },
+  footer_contact_title: { en: 'Contact', sq: 'Kontakt' },
+  footer_hours_title: { en: 'Open 24/7', sq: 'Hapur 24/7' },
+  footer_locations_title: { en: 'Locations', sq: 'Lokacionet' },
+
+  // FAQ — vetëm fakte të njohura. Kasko është OPSION, kurrë "e përfshirë".
+  faq_badge: { en: 'FAQ', sq: 'Pyetje të Shpeshta' },
+  faq_title: { en: 'Frequently Asked Questions', sq: 'Pyetjet më të Shpeshta' },
+  faq_subtitle: {
+    en: 'Everything you need to know before booking. Still have questions? Message us on WhatsApp.',
+    sq: 'Gjithçka që duhet të dini para rezervimit. Keni pyetje të tjera? Na shkruani në WhatsApp.'
+  },
+  faq_q1: { en: 'How do I book a car?', sq: 'Si mund të rezervoj një makinë?' },
+  faq_a1: {
+    en: 'Booking is done entirely via WhatsApp at +355 69 516 9873. Send us the dates and the car you want, and we confirm availability right away.',
+    sq: 'Rezervimi bëhet i gjithi përmes WhatsApp në +355 69 516 9873. Na dërgoni datat dhe makinën që dëshironi dhe ju konfirmojmë disponueshmërinë menjëherë.'
+  },
+  faq_q2: { en: 'What documents do I need?', sq: 'Çfarë dokumentesh më duhen?' },
+  faq_a2: {
+    en: 'A valid driving licence and an identification document (ID card or passport). For details about your specific case, message us on WhatsApp.',
+    sq: 'Një patentë e vlefshme dhe një dokument identifikimi (kartë identiteti ose pasaportë). Për detaje mbi rastin tuaj konkret, na shkruani në WhatsApp.'
+  },
+  faq_q3: { en: 'Do you deliver to Tirana Airport (Rinas)?', sq: 'A bëni dorëzim në Aeroportin e Rinasit?' },
+  faq_a3: {
+    en: 'Yes. We offer pick-up and drop-off at Tirana International Airport (TIA) 24/7, as well as anywhere in Tirana and Elbasan. Tell us your flight time and we will be waiting.',
+    sq: 'Po. Ofrojmë marrje dhe dorëzim në Aeroportin Ndërkombëtar të Tiranës (TIA) 24/7, si dhe kudo në Tiranë e Elbasan. Na tregoni orarin e fluturimit dhe ju presim atje.'
+  },
+  faq_q4: { en: 'How much does it cost per day?', sq: 'Sa kushton qeraja në ditë?' },
+  faq_a4: {
+    en: 'Prices range from 25€ to 55€ per day depending on the car. Pricing is transparent with no hidden fees — what you see is what you pay.',
+    sq: 'Çmimet variojnë nga 25€ deri në 55€ në ditë, në varësi të makinës. Çmimet janë transparente pa kosto të fshehura — ajo që shihni është ajo që paguani.'
+  },
+  faq_q5: { en: 'Is full insurance (kasko) available?', sq: 'A ofrohet sigurim i plotë (kasko)?' },
+  faq_a5: {
+    en: 'Full insurance (kasko) is available as an optional add-on at an extra cost — it is not included by default. Contact us on WhatsApp and we will explain the options.',
+    sq: 'Sigurimi i plotë (kasko) ofrohet si opsion me pagesë shtesë — nuk është i përfshirë si standard. Na kontaktoni në WhatsApp dhe ju shpjegojmë opsionet.'
+  },
+  faq_q6: { en: 'Are there other requirements (deposit, minimum age)?', sq: 'A ka kërkesa të tjera (depozitë, moshë minimale)?' },
+  faq_a6: {
+    en: 'Conditions may vary depending on the vehicle and rental period. Message us on WhatsApp and we will send you the full terms immediately.',
+    sq: 'Kushtet mund të ndryshojnë sipas mjetit dhe periudhës së qerasë. Na shkruani në WhatsApp dhe ju dërgojmë menjëherë kushtet e plota.'
+  },
 
   // SEO Content Blocks
   seo_title: { en: 'Car Rental Albania - Premium Services in Tirana and Elbasan', sq: 'Makina me Qera në Shqipëri - Shërbime Premium në Tiranë dhe Elbasan' },

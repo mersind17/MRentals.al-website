@@ -1,6 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Language } from '../types';
+import { WHATSAPP_NUMBER } from '../constants';
 import Logo from './Logo';
 
 interface HeaderProps {
@@ -10,15 +11,17 @@ interface HeaderProps {
   t: (key: string) => string;
 }
 
+const EASE = 'cubic-bezier(0.21, 0.6, 0.35, 1)';
+
 const Header: React.FC<HeaderProps> = ({ lang, toggleLang, isScrolled, t }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHome = location.pathname === '/';
 
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
+    return () => { document.body.style.overflow = 'unset'; };
   }, [isMenuOpen]);
 
   const navItems = [
@@ -28,67 +31,84 @@ const Header: React.FC<HeaderProps> = ({ lang, toggleLang, isScrolled, t }) => {
     { name: t('nav_contact'), id: 'contact' },
   ];
 
+  // Në home bën scroll të butë; nga faqet e tjera kthehet te home me hash-in përkatës.
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+    setIsMenuOpen(false);
+
+    if (!isHome) {
+      navigate(id === 'home' ? '/' : `/#${id}`);
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      const offsetPosition =
+        element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - 80;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
-    setIsMenuOpen(false);
   };
+
+  const handleBooking = () => {
+    setIsMenuOpen(false);
+    const message = 'Përshëndetje MRentals! Dua të bëj një rezervim.';
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const isPill = isScrolled || isMenuOpen;
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-500 ease-in-out ${isScrolled || isMenuOpen ? 'bg-[#182521]/95 backdrop-blur-xl py-4 shadow-2xl' : 'bg-transparent py-8'
+      <header className="fixed inset-x-0 top-0 z-[60]">
+        <div
+          className={`mx-auto flex max-w-6xl items-center justify-between px-6 transition-all duration-500 ${
+            isPill
+              ? 'mt-3 mx-4 md:mx-auto rounded-2xl bg-[#182521]/80 backdrop-blur-xl border border-white/10 py-3 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.6)]'
+              : 'bg-transparent border border-transparent py-5'
           }`}
-      >
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          {/* Brand Logo */}
-          <a
-            href="#home"
-            onClick={(e) => handleNavClick(e, 'home')}
-            aria-label="MRentals – Go to homepage"
-            className={`flex items-center group transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-100'}`}
+        >
+          {/* Brand */}
+          <Link
+            to="/"
+            onClick={(e) => isHome && handleNavClick(e, 'home')}
+            aria-label="MRentals – Kryefaqja"
+            className="relative z-[70] flex items-center"
           >
             <Logo className="h-4 sm:h-5" />
-          </a>
+          </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center space-x-12">
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <a
                 key={item.id}
-                href={`#${item.id}`}
+                href={isHome ? `#${item.id}` : `/#${item.id}`}
                 onClick={(e) => handleNavClick(e, item.id)}
-                className="text-[10px] font-black uppercase tracking-[0.4em] text-white/60 hover:text-white active:text-white transition-all relative group py-2"
+                className="group relative text-sm font-medium text-white/65 transition-colors hover:text-white"
               >
                 {item.name}
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[3px] bg-[#acc8a2] transition-all duration-300 group-hover:w-full group-active:w-full"></span>
+                <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-[#acc8a2] transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
 
-            {/* Lang Toggle (Circle) */}
             <button
               onClick={toggleLang}
               aria-label={`Switch language to ${lang === 'en' ? 'Albanian' : 'English'}`}
-              className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 border border-white/20 hover:bg-white/20 active:bg-white/20 transition-all"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all"
             >
               <span className="text-[10px] font-black text-white" aria-hidden="true">{lang.toUpperCase()}</span>
             </button>
+
+            <button
+              onClick={handleBooking}
+              className="rounded-full bg-[#acc8a2] px-5 py-2.5 text-sm font-bold text-[#182521] transition-all duration-300 hover:bg-[#9db893] hover:shadow-[0_0_24px_-4px_rgba(172,200,162,0.6)]"
+            >
+              {t('btn_book_now')}
+            </button>
           </nav>
 
-          {/* Mobile Actions Toolbar */}
-          <div className="flex items-center space-x-3 md:hidden">
+          {/* Mobile actions */}
+          <div className="flex items-center gap-3 md:hidden">
             <button
               onClick={toggleLang}
               aria-label={`Switch language to ${lang === 'en' ? 'Albanian' : 'English'}`}
@@ -96,85 +116,83 @@ const Header: React.FC<HeaderProps> = ({ lang, toggleLang, isScrolled, t }) => {
             >
               <span className="text-[10px] font-black text-white" aria-hidden="true">{lang.toUpperCase()}</span>
             </button>
+
+            {/* Hamburger 2-vija → X */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              type="button"
+              onClick={() => setIsMenuOpen((v) => !v)}
+              aria-label={isMenuOpen ? 'Mbyll menunë' : 'Hap menunë'}
               aria-expanded={isMenuOpen}
-              className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full border border-white/20 group"
+              className="relative z-[70] flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10"
             >
-              {isMenuOpen ? (
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <div className="flex flex-col items-center justify-center space-y-1.5">
-                  <span className="h-0.5 bg-white w-5"></span>
-                  <span className="h-0.5 bg-white w-3.5 ml-auto mr-0"></span>
-                  <span className="h-0.5 bg-white w-5"></span>
-                </div>
-              )}
+              <span className="relative block h-3 w-[18px]">
+                <span
+                  className={`absolute left-0 top-0 h-[1.5px] w-full bg-white transition-transform duration-300 ${
+                    isMenuOpen ? 'translate-y-[5px] rotate-45' : ''
+                  }`}
+                  style={{ transitionTimingFunction: EASE }}
+                />
+                <span
+                  className={`absolute bottom-0 left-0 h-[1.5px] w-full bg-white transition-transform duration-300 ${
+                    isMenuOpen ? '-translate-y-[5.5px] -rotate-45' : ''
+                  }`}
+                  style={{ transitionTimingFunction: EASE }}
+                />
+              </span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu Overlay - Matches Screenshot */}
+      {/* Overlay mobile */}
       <div
-        className={`fixed inset-0 z-[55] md:hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-full pointer-events-none'
-          }`}
+        className={`fixed inset-0 z-[55] bg-[#182521]/98 backdrop-blur-xl transition-opacity duration-300 md:hidden ${
+          isMenuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+        }`}
       >
-        {/* Deep Green Background as requested */}
-        <div className="absolute inset-0 bg-[#182521]"></div>
-
-        {/* Mobile Header (Repeated inside overlay for alignment) */}
-        <div className="absolute top-0 left-0 right-0 py-8 px-6 flex justify-between items-center z-10">
-          <Logo className="h-4 sm:h-5" />
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={toggleLang}
-              aria-label={`Switch language to ${lang === 'en' ? 'Albanian' : 'English'}`}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-white/20"
+        <nav className="flex h-full flex-col justify-center gap-2 px-8" aria-label="Mobile">
+          {navItems.map((item, i) => (
+            <a
+              key={item.id}
+              href={isHome ? `#${item.id}` : `/#${item.id}`}
+              onClick={(e) => handleNavClick(e, item.id)}
+              className="font-black text-4xl uppercase tracking-tighter text-white transition-all duration-500 hover:text-[#acc8a2]"
+              style={{
+                transitionTimingFunction: EASE,
+                transitionDelay: isMenuOpen ? `${80 + i * 50}ms` : '0ms',
+                opacity: isMenuOpen ? 1 : 0,
+                transform: isMenuOpen ? 'translateY(0)' : 'translateY(24px)',
+              }}
             >
-              <span className="text-[10px] font-black text-white" aria-hidden="true">{lang.toUpperCase()}</span>
-            </button>
-            <button
-              onClick={() => setIsMenuOpen(false)}
-              aria-label="Close navigation menu"
-              className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full border border-white/20"
-            >
-              <svg className="w-5 h-5 text-white" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
+              {item.name}
+            </a>
+          ))}
 
-        <div className="relative h-full flex flex-col items-center justify-center px-6">
-          {/* Menu Items */}
-          <div className="flex flex-col items-center space-y-10">
-            {navItems.map((item, idx) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className={`text-5xl sm:text-6xl font-black uppercase tracking-tighter text-white hover:text-[#acc8a2] active:text-[#acc8a2] transition-all duration-500 transform ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
-                  }`}
-                style={{ transitionDelay: `${isMenuOpen ? idx * 100 + 100 : 0}ms` }}
-              >
-                {item.name}
-              </a>
-            ))}
-          </div>
-
-          {/* Bottom Branding Logo */}
           <div
-            className={`absolute bottom-16 transform transition-all duration-700 ${isMenuOpen ? 'opacity-30 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-            style={{ transitionDelay: '500ms' }}
+            className="mt-10 flex flex-wrap items-center gap-3 transition-all duration-500"
+            style={{
+              transitionTimingFunction: EASE,
+              transitionDelay: isMenuOpen ? '320ms' : '0ms',
+              opacity: isMenuOpen ? 1 : 0,
+              transform: isMenuOpen ? 'translateY(0)' : 'translateY(24px)',
+            }}
           >
-            <Logo className="h-5 sm:h-6" />
+            <button
+              onClick={handleBooking}
+              className="rounded-full bg-[#acc8a2] px-6 py-3.5 text-sm font-bold text-[#182521]"
+            >
+              {t('btn_book_now')}
+            </button>
+            <a
+              href="https://www.instagram.com/mrentals_al"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-white/15 px-5 py-3.5 text-sm font-bold text-white/70"
+            >
+              Instagram
+            </a>
           </div>
-        </div>
+        </nav>
       </div>
     </>
   );

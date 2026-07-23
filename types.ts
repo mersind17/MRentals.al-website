@@ -17,6 +17,7 @@ export enum Fuel {
 }
 
 export interface Car {
+  /** Përdoret edhe si slug i URL-së: /makina/<id>. SINKRON me scripts/seo-routes.mjs + sitemap. */
   id: string;
   name: string;
   engine: string;
@@ -30,6 +31,8 @@ export interface Car {
   features: string[];
   isAvailable: boolean;
   category: 'Premium' | 'Standard' | 'SUV';
+  /** Përshkrim unik SEO për faqen /makina/<id>. */
+  seoText: { sq: string; en: string };
 }
 
 export interface TranslationSet {
