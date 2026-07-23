@@ -41,9 +41,9 @@ export const FLEET: Car[] = [
     features: ['S-Line Package', 'Navigation', 'Bluetooth', 'Parking Sensors'],
     // images = path bazë pa suffix; CarCard/Hero ndërtojnë -800/-1600.webp + -800.jpg (shih scripts/optimize-images.mjs)
     images: [
-      'photos/audi-a5-1',
-      'photos/audi-a5-3',
-      'photos/audi-a5-2'
+      '/photos/audi-a5-1',
+      '/photos/audi-a5-3',
+      '/photos/audi-a5-2'
     ],
     isAvailable: true,
     category: 'Premium',
@@ -63,10 +63,10 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['LPG Economy', 'Leather Interior', 'Bluetooth', 'Parking Sensors'],
     images: [
-      'photos/hyundai-1',
-      'photos/hyundai-2',
-      'photos/hyundai-3',
-      'photos/hyundai-4'
+      '/photos/hyundai-1',
+      '/photos/hyundai-2',
+      '/photos/hyundai-3',
+      '/photos/hyundai-4'
     ],
     isAvailable: true,
     category: 'Premium',
@@ -86,9 +86,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Automatic', 'Leather Interior', 'Navigation', 'Parking Sensors'],
     images: [
-      'photos/passat-1',
-      'photos/passat-2',
-      'photos/passat-3'
+      '/photos/passat-1',
+      '/photos/passat-2',
+      '/photos/passat-3'
     ],
     isAvailable: true,
     category: 'Premium',
@@ -108,9 +108,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Automatic', 'Climate Control', 'Economic', 'Compact'],
     images: [
-      'photos/golf-blue-1',
-      'photos/golf-blue-2',
-      'photos/golf-blue-3'
+      '/photos/golf-blue-1',
+      '/photos/golf-blue-2',
+      '/photos/golf-blue-3'
     ],
     isAvailable: true,
     category: 'Standard',
@@ -130,9 +130,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Manual', 'Very Economic', 'Easy to Drive', 'Reliable'],
     images: [
-      'photos/golf-black-1',
-      'photos/golf-black-2',
-      'photos/golf-black-3'
+      '/photos/golf-black-1',
+      '/photos/golf-black-2',
+      '/photos/golf-black-3'
     ],
     isAvailable: true,
     category: 'Standard',
@@ -152,9 +152,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Huge Trunk', 'Automatic', 'Comfortable', 'Fuel Efficient'],
     images: [
-      'photos/skoda-1',
-      'photos/skoda-2',
-      'photos/skoda-3'
+      '/photos/skoda-1',
+      '/photos/skoda-2',
+      '/photos/skoda-3'
     ],
     isAvailable: true,
     category: 'Standard',
@@ -174,9 +174,9 @@ export const FLEET: Car[] = [
     seats: 5,
     features: ['Automatic', 'Sedan Comfort', 'Large Interior', 'Economic'],
     images: [
-      'photos/jetta-1',
-      'photos/jetta-2',
-      'photos/jetta-3'
+      '/photos/jetta-1',
+      '/photos/jetta-2',
+      '/photos/jetta-3'
     ],
     isAvailable: true,
     category: 'Standard',
@@ -196,9 +196,9 @@ export const FLEET: Car[] = [
     seats: 4,
     features: ['Manual', 'Economic'],
     images: [
-      'photos/polo-1',
-      'photos/polo-2',
-      'photos/polo-3'
+      '/photos/polo-1',
+      '/photos/polo-2',
+      '/photos/polo-3'
     ],
     isAvailable: true,
     category: 'Standard',

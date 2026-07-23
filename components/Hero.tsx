@@ -48,12 +48,12 @@ const Hero: React.FC<HeroProps> = ({ t }) => {
       <div className="absolute inset-0" ref={bgRef}>
         <picture>
           <source
-            srcSet="photos/audi-a5-1-1280.webp 1280w, photos/audi-a5-1-1920.webp 1920w"
+            srcSet="/photos/audi-a5-1-1280.webp 1280w, /photos/audi-a5-1-1920.webp 1920w"
             sizes="100vw"
             type="image/webp"
           />
           <img
-            src="photos/audi-a5-1-800.jpg"
+            src="/photos/audi-a5-1-800.jpg"
             alt="Makina me qera në Shqipëri - MRentals"
             className="w-full h-full object-cover animate-[kenburns_20s_ease-in-out_infinite]"
             style={{ transform: `scale(1.1) translateY(${scrollY * 0.3}px)` }}
