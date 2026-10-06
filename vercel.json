@@ -1,47 +1,33 @@
 {
-    "redirects": [
-        {
-            "source": "/(.*)",
-            "has": [
-                {
-                    "type": "host",
-                    "value": "www.mrentals.al"
-                }
-            ],
-            "destination": "https://mrentals.al/$1",
-            "permanent": true
-        }
-    ],
-    "rewrites": [
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
-        }
-    ],
-    "headers": [
-        {
-            "source": "/assets/(.*)",
-            "headers": [
-                { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-            ]
-        },
-        {
-            "source": "/photos/(.*)",
-            "headers": [
-                { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-            ]
-        },
-        {
-            "source": "/(og-image.jpg|favicon-32.png|apple-touch-icon.png|icon-512.png)",
-            "headers": [
-                { "key": "Cache-Control", "value": "public, max-age=86400" }
-            ]
-        },
-        {
-            "source": "/(sitemap.xml|robots.txt)",
-            "headers": [
-                { "key": "Cache-Control", "value": "public, max-age=3600" }
-            ]
-        }
-    ]
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.mrentals.al" }],
+      "destination": "https://mrentals.al/$1",
+      "permanent": true
+    },
+    { "source": "/makina/:slug", "destination": "/#flota", "permanent": true },
+    { "source": "/:car-details.html", "destination": "/#flota", "permanent": true },
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/makina-me-qera-tirane", "destination": "/", "permanent": true },
+    { "source": "/makina-me-qera-rinas", "destination": "/", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/sitemap-0.xml" }
+  ],
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/img/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
+    }
+  ]
 }

@@ -1,0 +1,212 @@
+/* Fontet: vetëm nënbashkësia "latin" (përfshin ë dhe ç), të vendosura në serverin tonë */
+@import '@fontsource/geist/latin-600.css';
+@import '@fontsource/league-gothic/latin-400.css';
+@import '@fontsource/space-grotesk/latin-700.css';
+/* Inter si font "variable": një skedar (48KB) për peshat 400/500/600 në vend të tre (71KB).
+   Vetëm nënbashkësia latin — pa latin-ext (85KB) që do shkarkohej për disa shkronja turke te vlerësimet. */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../assets/fonts/inter-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Fonte "rezervë" me përmasat e Geist/Inter (llogaritur me fontkit nga vetë skedarët):
+   teksti zë të njëjtin vend para dhe pas ngarkimit të fontit → asnjë "kërcim" i faqes (CLS). */
+@font-face {
+  font-family: 'Geist Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Arial');
+  font-weight: 600;
+  size-adjust: 102.6%;
+  ascent-override: 97.96%;
+  descent-override: 28.75%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('ArialMT');
+  size-adjust: 104.81%;
+  ascent-override: 92.43%;
+  descent-override: 23.01%;
+  line-gap-override: 0%;
+}
+
+:root {
+  --bg: #f2f2f4;
+  --ink: #0e0e10;
+  --ink-2: #19171c;
+  --ink-3: #121214;
+  --muted: #66666e;
+  --muted-2: #5c5c63;
+  --line: #d9d9de;
+  --chip: #e5e5e8;
+  --chip-2: #ededf0;
+  --lime: #d6f32f;
+  --mint: #e2efe6;
+  --star: #fab81a;
+
+  --f-display: 'Geist', 'Geist Fallback', system-ui, sans-serif;
+  --f-body: 'Inter Variable', 'Inter Fallback', system-ui, sans-serif;
+  --f-label: 'Space Grotesk', system-ui, sans-serif;
+  --f-poster: 'League Gothic', 'Arial Narrow', sans-serif;
+
+  --ease-out: cubic-bezier(0.21, 0.6, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* gjerësia e përmbajtjes: 1152px te desktop, 20px anash te mobile */
+  --gutter: 20px;
+  --content: min(1152px, 100% - var(--gutter) * 2);
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 32px; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--ink-2);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+img, picture, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { width: var(--content); margin-inline: auto; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ---------- Titujt e seksioneve ---------- */
+.eyebrow {
+  font-family: var(--f-label);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  line-height: normal;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.h2 {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--ink-2);
+}
+.sec-head { display: flex; flex-direction: column; gap: 10px; }
+@media (min-width: 1024px) {
+  .eyebrow { font-size: 13px; }
+  .h2 { font-size: 56px; line-height: 1; }
+  .sec-head { gap: 12px; }
+}
+
+/* ---------- Butonat ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: normal;
+  white-space: nowrap;
+  transition: transform .15s var(--ease-out), background-color .2s, opacity .2s;
+}
+.btn:active { transform: scale(.97); }
+.btn--dark { background: var(--ink); color: #fff; }
+.btn--dark:hover { background: #26262a; }
+.btn--light { background: var(--chip); color: var(--ink); }
+.btn--light:hover { background: #dcdce0; }
+.btn--white { background: #fff; color: var(--ink-3); border: 1px solid var(--line); }
+.btn--white:hover { background: #f7f7f8; }
+.btn--lime { background: var(--lime); color: var(--ink); font-family: var(--f-label); font-weight: 700; }
+.btn--lime:hover { background: #e3f76a; }
+
+/* ---------- Kartat e bardha (hapat, avantazhet, FAQ...) ---------- */
+.card {
+  background: #fff;
+  border-radius: 20px;
+}
+@media (min-width: 1024px) {
+  .card { border-radius: 24px; }
+}
+
+/* ---------- Sfondi me logo (nga Figma): nis te "Si funksionon", zbehet në fillim e në fund ---------- */
+.patterned { position: relative; isolation: isolate; }
+/* seksionet poshtë nuk vizatohen derisa t'u afrohesh (shfletuesi mban mend madhësinë pasi i sheh) */
+.patterned > *, footer.contact { content-visibility: auto; contain-intrinsic-size: auto 650px; }
+.patterned::before {
+  content: '';
+  position: absolute;
+  inset: -150px 0 -46px;
+  z-index: -1;
+  background: url('/img/pattern-m.webp') 0 0 / 150px 156px repeat;
+  opacity: .2;
+  /* zbehet në fillim dhe në fund, si gradientët në Figma */
+  mask-image: linear-gradient(to bottom, transparent, #000 280px, #000 calc(100% - 240px), transparent);
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .patterned::before {
+    inset: -60px 0 -110px;
+    background-image: url('/img/pattern-d.webp');
+    background-size: 180px 184px;
+    background-position: center top;
+    mask-image: linear-gradient(to bottom, transparent, #000 320px, #000 calc(100% - 280px), transparent);
+  }
+}
+
+/* ---------- Animacionet me scroll (vetëm CSS) ----------
+   Titujt e seksioneve nisin gri të zbehtë dhe mbushen me ngjyrë nga e majta sa më shumë bën scroll.
+   Kartat ngjiten butë kur hyjnë në ekran. Shfletuesit pa mbështetje i shohin normalisht. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .h2, .fill-text {
+      --fill: var(--ink-2);
+      --empty: #cfcfd5;
+      color: transparent;
+      background: linear-gradient(90deg, var(--fill) 50%, var(--empty) 50%) 100% 0 / 200% 100% no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      /* që bishtat e g, j, ç të mos priten nga sfondi i tekstit */
+      padding-bottom: .12em;
+      margin-bottom: -.12em;
+      animation: text-fill linear both;
+      animation-timeline: view();
+      animation-range: entry 35% cover 50%;
+    }
+    .card, .reveal-up {
+      animation: rise-in both cubic-bezier(0.22, 1, 0.36, 1);
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+  }
+}
+@keyframes text-fill {
+  to { background-position: 0 0; }
+}
+@keyframes rise-in {
+  from { opacity: 0; translate: 0 32px; scale: .98; }
+}
+
+/* Lëvizja zvogëlohet për ata që e kanë kërkuar te telefoni */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

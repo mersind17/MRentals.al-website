@@ -1,0 +1,51 @@
+---
+// Kryefaqja e plotë — e njëjta për shqip (/) dhe anglisht (/en). Ndryshon vetëm `lang`.
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Fleet from './Fleet.astro';
+import Steps from './Steps.astro';
+import Why from './Why.astro';
+import Reviews from './Reviews.astro';
+import Faq from './Faq.astro';
+import MapSection from './MapSection.astro';
+import Contact from './Contact.astro';
+import { SITE_URL } from '../data/site';
+import { business, fleet, faq, website } from '../data/schema';
+import { T, homePath, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang];
+const pageUrl = lang === 'en' ? `${SITE_URL}/en` : `${SITE_URL}/`;
+---
+
+<Base
+  title={t.meta.title}
+  description={t.meta.description}
+  lang={lang}
+  path={homePath(lang)}
+  alternates={{ sq: '/', en: '/en' }}
+  xDefault="/en"
+  schema={[business(), fleet(lang, pageUrl), faq(lang, pageUrl), website()]}
+>
+  <Header lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <Fleet lang={lang} />
+    <!-- Sfondi me logo (nga Figma) nis te "Si funksionon" dhe mbaron te harta -->
+    <div class="patterned">
+      <Steps lang={lang} />
+      <Why lang={lang} />
+      <Reviews lang={lang} />
+      <Faq lang={lang} />
+      <MapSection lang={lang} />
+    </div>
+  </main>
+  <Contact lang={lang} />
+</Base>
+
+<style>
+  /* kartat e hero-s dalin jashtë anëve si në Figma — i presim këtu që faqja të mos zgjerohet */
+  main { overflow-x: clip; }
+</style>

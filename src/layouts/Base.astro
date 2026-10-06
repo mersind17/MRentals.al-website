@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+import geist600 from '@fontsource/geist/files/geist-latin-600-normal.woff2?url';
+import inter from '../assets/fonts/inter-latin-wght-normal.woff2?url';
+import { SITE_URL } from '../data/site';
+import { T, type Lang } from '../i18n';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  /** Path-i kanonik, p.sh. "/" ose "/en". */
+  path: string;
+  /** E njëjta faqe në gjuhët e tjera (hreflang), p.sh. { sq: '/', en: '/en' }. */
+  alternates?: Partial<Record<Lang, string>>;
+  /** Faqja për vizitorët me gjuhë tjetër (italisht, gjermanisht...). */
+  xDefault?: string;
+  image?: string;
+  /** Objekte JSON-LD (schema.org) për këtë faqe. */
+  schema?: object[];
+}
+
+const { title, description, lang, path, alternates = {}, xDefault, image = '/og-image.jpg', schema = [] } = Astro.props;
+const abs = (p: string) => (p === '/' ? `${SITE_URL}/` : `${SITE_URL}${p}`);
+const canonical = abs(path);
+const ogImage = new URL(image, SITE_URL).href;
+const t = T[lang];
+const otherLocales = Object.keys(alternates).filter((l) => l !== lang).map((l) => T[l as Lang].ogLocale);
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href={canonical} />
+    {Object.entries(alternates).map(([l, p]) => <link rel="alternate" hreflang={l} href={abs(p!)} />)}
+    {xDefault && <link rel="alternate" hreflang="x-default" href={abs(xDefault)} />}
+    <meta name="theme-color" content="#f2f2f4" />
+
+    <!-- Fontet e para që shihen: shkarkohen menjëherë -->
+    <link rel="preload" href={geist600} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={inter} as="font" type="font/woff2" crossorigin />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MRentals" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={t.ogLocale} />
+    {otherLocales.map((l) => <meta property="og:locale:alternate" content={l} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {schema.length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': schema })} />
+    )}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

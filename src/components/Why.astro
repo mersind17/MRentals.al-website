@@ -1,0 +1,49 @@
+---
+import { T, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const t = T[Astro.props.lang].why;
+---
+
+<section class="why wrap" id="pse-ne" aria-labelledby="why-title">
+  <div class="sec-head">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h2 class="h2" id="why-title">{t.title}</h2>
+  </div>
+  <ul class="list">
+    {t.items.map((w) => (
+      <li class="card item">
+        <span class="icon" aria-hidden="true">{w.icon}</span>
+        <h3>{w.title}</h3>
+        <p>{w.text}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .why { display: flex; flex-direction: column; gap: 24px; padding: 72px 0 24px; }
+  .list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .item { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px 20px 22px; }
+  .icon {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: var(--lime);
+    color: var(--ink-2);
+    font-family: var(--f-label);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: normal;
+  }
+  h3 { font-weight: 600; font-size: 19px; line-height: normal; color: var(--ink-2); }
+  p { font-size: 14px; line-height: 1.45; color: var(--muted); }
+
+  @media (min-width: 1024px) {
+    .why { gap: 40px; padding-top: 120px; padding-bottom: 0; }
+    .list { flex-direction: row; gap: 20px; }
+    .item { flex: 1; gap: 14px; padding: 28px 28px 30px; }
+    .icon { padding: 9px 14px; font-size: 15px; color: var(--ink); }
+    h3 { font-size: 21px; }
+    p { font-size: 15px; line-height: 1.5; }
+  }
+</style>

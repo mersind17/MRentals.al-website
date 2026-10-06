@@ -1,0 +1,373 @@
+---
+// Hero: një "skenë" me koordinatat e Figma-s. Çdo element merr pozicionin në px të dizajnit
+// (mobile mbi 390, desktop mbi 1440) dhe CSS-ja i shkallëzon me njësinë --u (cqw),
+// kështu kompozimi mbetet identik me Figma-n në çdo gjerësi ekrani.
+import { Picture } from 'astro:assets';
+import { carById } from '../data/cars';
+import mockup from '../assets/mockup.png';
+import { waLink } from '../data/site';
+import { T, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const t = T[Astro.props.lang];
+
+type Card = {
+  c: [number, number]; size: [number, number]; rot: number; radius: number;
+  shadow: [number, number, number, number, number, number]; // l, t, w, h, insetY, insetX
+  car: [number, number, number, number];
+};
+const M_CENTER = 200, D_CENTER = 720;
+
+// [id, mobile | null, desktop, shadow index]
+const cards: { id: string; m: Card | null; d: Card; ms?: number; ds: number }[] = [
+  { id: 'vw-passat-sel', ms: 0, ds: 0,
+    m: { c: [30, 405], size: [168, 202], rot: -8, radius: 18, shadow: [17.85, 137, 131.75, 10.4, .5769, .0455], car: [7, 65, 155, 80] },
+    d: { c: [246, 556], size: [250, 300], rot: -10, radius: 28, shadow: [26.1, 204.2, 195.5, 15.34, .5215, .0409], car: [10, 98, 230, 118] } },
+  { id: 'vw-golf-6-auto', ms: 1, ds: 1,
+    m: { c: [115, 396], size: [158, 190], rot: -4, radius: 17, shadow: [17.15, 129, 123.25, 10.4, .5769, .0487], car: [7, 57, 145, 80] },
+    d: { c: [404, 548], size: [238, 286], rot: -6.5, radius: 26, shadow: [25.33, 194, 186.15, 15.6, .5128, .043], car: [10, 86, 219, 120] } },
+  { id: 'audi-a5', ms: 2, ds: 2,
+    m: { c: [200, 392], size: [152, 182], rot: 0, radius: 17, shadow: [15.8, 124, 119, 9.1, .6593, .0504], car: [6, 61, 140, 70] },
+    d: { c: [562, 543], size: [226, 271], rot: -3, radius: 25, shadow: [23.56, 184.6, 176.8, 13.52, .5917, .0452], car: [9, 91, 208, 104] } },
+  { id: 'skoda-octavia', ms: 3, ds: 3,
+    m: { c: [285, 396], size: [158, 190], rot: 4, radius: 17, shadow: [17.15, 129.6, 123.25, 9.62, .6237, .0487], car: [7, 63, 145, 74] },
+    d: { c: [720, 540], size: [218, 262], rot: 0, radius: 24, shadow: [23.07, 178.8, 170.85, 13.26, .6033, .0468], car: [9, 87, 201, 102] } },
+  { id: 'vw-jetta', ms: 4, ds: 4,
+    m: { c: [368, 405], size: [168, 202], rot: 8, radius: 18, shadow: [17.85, 136.9, 131.75, 10.53, .5698, .0455], car: [7, 64, 155, 81] },
+    d: { c: [878, 537], size: [226, 271], rot: 3, radius: 25, shadow: [23.56, 184.2, 176.8, 14.04, .5698, .0452], car: [9, 87, 208, 108] } },
+  { id: 'vw-golf-6-manual', ds: 5, m: null,
+    d: { c: [1036, 532], size: [238, 286], rot: 6.5, radius: 26, shadow: [25.33, 194.7, 186.15, 14.69, .5446, .043], car: [10, 93, 219, 113] } },
+  { id: 'vw-polo', ds: 6, m: null,
+    d: { c: [1194, 524], size: [250, 300], rot: 10, radius: 28, shadow: [26.1, 203.9, 195.5, 15.73, .5086, .0409], car: [10, 95, 230, 121] } },
+];
+
+// Flluskat: qendra e pilulës, rrotullimi, qendra e bishtit dhe rrotullimi i tij
+const bubbles = [
+  { label: 'Golf 6', bg: '#0a18a7', fg: '#fff', i: 0,
+    m: { pill: [84.85, 271.72, -6.94], tail: [82.15, 294.21, 173.06] },
+    d: { pill: [405.39, 378.38, -4], tail: [399.66, 405.34, 176] } },
+  { label: 'Audi A5', bg: '#e2efe6', fg: '#200909', i: 1,
+    m: { pill: [156.31, 517.28, 11.6], tail: [150.37, 492.79, 12.68] },
+    d: { pill: [590.17, 698.17, 3], tail: [580.77, 671.14, 3] } },
+  { label: 'Jetta', bg: '#bfe8cd', fg: '#1f5a35', i: 2,
+    m: { pill: [339.86, 267.27, 5], tail: [333.96, 288.83, -175] },
+    d: { pill: [898.47, 396.95, 5], tail: [889.98, 422.81, -175] } },
+];
+
+/** Shndërron [l,t,w,h] në variabla CSS me prefiks (m/d). */
+const box = (p: string, [l, t, w, h]: number[]) => `--${p}l:${l};--${p}t:${t};--${p}w:${w};--${p}h:${h};`;
+const shadowBox = ([l, t, w, h, iy, ix]: number[]) => [l - w * ix, t - h * iy, w * (1 + 2 * ix), h * (1 + 2 * iy)];
+
+function cardVars(card: (typeof cards)[number]) {
+  let s = '';
+  for (const [p, c, center] of [['m', card.m, M_CENTER], ['d', card.d, D_CENTER]] as const) {
+    if (!c) continue;
+    s += `--${p}x:${c.c[0]};--${p}y:${c.c[1]};--${p}cw:${c.size[0]};--${p}ch:${c.size[1]};--${p}r:${c.rot}deg;--${p}rad:${c.radius};--${p}deal:${center - c.c[0]};`;
+  }
+  return s;
+}
+const innerVars = (card: (typeof cards)[number], key: 'shadow' | 'car') => {
+  let s = '';
+  for (const p of ['m', 'd'] as const) {
+    const c = card[p];
+    if (c) s += box(p, key === 'shadow' ? shadowBox(c.shadow) : c.car);
+  }
+  return s;
+};
+const mobileIds = new Set(cards.filter((c) => c.m).map((c) => c.id));
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="stage">
+    <h1 id="hero-title" class="title rise">{t.hero.title[0]} <br />{t.hero.title[1]}</h1>
+
+    {cards.map((card, i) => {
+      const car = carById(card.id);
+      return (
+        <div class:list={['fan deal', { 'd-only': !card.m }]} style={cardVars(card) + `--delay:${0.1 + Math.abs(i - 3) * 0.06}s`}>
+          <div class="float" style={`--fd:${4.8 + (i % 3) * 0.5}s;--fdl:${-i * 0.9}s;--amp:${-7 - (i % 3) * 2}`}>
+            <div class="card-hero">
+              <!-- <picture> me media: shfletuesi shkarkon vetëm hijen e madhësisë aktuale -->
+              <picture>
+                <source media="(min-width: 1024px)" srcset={`/img/d-shadow-${card.ds}.svg`} />
+                <img class="sh" src={`/img/${card.m ? `m-shadow-${card.ms}` : `d-shadow-${card.ds}`}.svg`} alt="" width="10" height="10" style={innerVars(card, 'shadow')} />
+              </picture>
+              <div class="car-box" style={innerVars(card, 'car')}>
+                <Picture
+                  src={car.image}
+                  alt={car.name}
+                  formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+                  widths={[480]}
+                  sizes="240px"
+                  loading={mobileIds.has(card.id) ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+
+    {bubbles.map((b) => (
+      <div
+        class="bubble"
+        style={`--mox:${b.m.tail[0]};--moy:${b.m.tail[1]};--dox:${b.d.tail[0]};--doy:${b.d.tail[1]};--delay:${0.75 + b.i * 0.12}s;--fd:${3.6 + b.i * 0.3}s`}
+        aria-hidden="true"
+      >
+        <span class="pill" style={`--mx:${b.m.pill[0]};--my:${b.m.pill[1]};--mr:${b.m.pill[2]}deg;--dx:${b.d.pill[0]};--dy:${b.d.pill[1]};--dr:${b.d.pill[2]}deg;background:${b.bg};color:${b.fg}`}>{b.label}</span>
+        <span class="tail" style={`--mx:${b.m.tail[0]};--my:${b.m.tail[1]};--mr:${b.m.tail[2]}deg;--dx:${b.d.tail[0]};--dy:${b.d.tail[1]};--dr:${b.d.tail[2]}deg`}>
+          <picture>
+            <source media="(min-width: 1024px)" srcset={`/img/d-poly-${b.i}.svg`} />
+            <img src={`/img/m-poly-${b.i}.svg`} alt="" width="11" height="9" />
+          </picture>
+        </span>
+      </div>
+    ))}
+
+    <p class="sub reveal" style="--d:.1s">
+      <img src="/img/icon-plane.svg" alt="" width="18" height="18" />{t.hero.sub}
+    </p>
+
+    <div class="ctas reveal" style="--d:.18s">
+      <a href={waLink(t.wa.default)} class="btn btn--dark" target="_blank" rel="noopener">{t.hero.book}</a>
+      <a href="#flota" class="btn btn--light">{t.hero.fleet}</a>
+    </div>
+
+    <!-- Makina e bardhë në cep, me hijen e saj -->
+    <picture>
+      <source media="(min-width: 1024px)" srcset="/img/hije-d.svg" />
+      <img class="hije drive-in" src="/img/hije-m.svg" alt="" width="170" height="42" />
+    </picture>
+    <Picture
+      src={mockup}
+      alt=""
+      class="mockup drive-in"
+      formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+      widths={[380, 560]}
+      sizes="(min-width: 1024px) 280px, 186px"
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+  }
+  .stage {
+    container-type: inline-size;
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 390 / 800;
+    /* --u = 1px i Figma-s */
+    --u: calc(100cqw / 390);
+  }
+
+  .d-only { display: none !important; }
+
+  /* ---------- Teksti ---------- */
+  .title {
+    position: absolute;
+    left: calc(195.5 * var(--u));
+    top: calc(112 * var(--u));
+    translate: -50% 0;
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: calc(52 * var(--u));
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--ink-2);
+    text-align: center;
+    white-space: nowrap;
+  }
+  /* një rresht me ikonën e avionit — zë qendrën e hapësirës që kishin 2 rreshtat në Figma */
+  .sub {
+    position: absolute;
+    left: calc(195 * var(--u));
+    top: calc(610 * var(--u));
+    translate: -50% 0;
+    display: flex; align-items: center; gap: calc(7 * var(--u));
+    font-size: calc(15 * var(--u));
+    line-height: 1.4;
+    color: var(--muted-2);
+    white-space: nowrap;
+  }
+  .sub img { flex: none; width: calc(18 * var(--u)); height: calc(18 * var(--u)); }
+  .ctas {
+    position: absolute;
+    left: calc(195 * var(--u));
+    top: calc(698 * var(--u));
+    translate: -50% 0;
+    display: flex;
+    gap: calc(8 * var(--u));
+  }
+  .ctas .btn {
+    font-size: calc(15 * var(--u));
+    padding: calc(15 * var(--u)) calc(26 * var(--u));
+  }
+  .ctas .btn--light { padding-inline: calc(22 * var(--u)); }
+
+  /* ---------- Kartat ---------- */
+  .fan {
+    position: absolute;
+    left: calc(var(--mx) * var(--u));
+    top: calc(var(--my) * var(--u));
+    transform: translate(-50%, -50%);
+    --cw: var(--mcw); --ch: var(--mch); --r: var(--mr); --rad: var(--mrad); --dealx: var(--mdeal);
+  }
+  .card-hero {
+    position: relative;
+    width: calc(var(--cw) * var(--u));
+    height: calc(var(--ch) * var(--u));
+    border-radius: calc(var(--rad) * var(--u));
+    background: var(--mint);
+    overflow: clip;
+    rotate: var(--r);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .08), 0 18px 28px -6px rgba(0, 0, 0, .22);
+  }
+  .sh, .car-box {
+    position: absolute;
+    left: calc(var(--ml) * var(--u));
+    top: calc(var(--mt) * var(--u));
+    width: calc(var(--mw) * var(--u));
+    height: calc(var(--mh) * var(--u));
+  }
+  .car-box :global(img) { width: 100%; height: 100%; object-fit: fill; }
+
+  /* ---------- Flluskat ---------- */
+  .bubble {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    transform-origin: calc(var(--mox) * var(--u)) calc(var(--moy) * var(--u));
+  }
+  .pill, .tail {
+    position: absolute;
+    left: calc(var(--mx) * var(--u));
+    top: calc(var(--my) * var(--u));
+    transform: translate(-50%, -50%) rotate(var(--mr));
+  }
+  .pill {
+    padding: calc(8 * var(--u)) calc(14 * var(--u)) calc(9 * var(--u));
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: calc(15 * var(--u));
+    line-height: normal;
+    white-space: nowrap;
+  }
+  .tail { width: calc(18 * var(--u)); height: calc(13 * var(--u)); }
+  /* poligoni zë kutinë e bishtit me të njëjtat hapësira si në Figma */
+  .tail img { position: absolute; left: 18.67%; top: 9.25%; width: 62.66%; height: 65.75%; }
+
+  /* ---------- Makina e bardhë ---------- */
+  .hije {
+    position: absolute;
+    left: calc(354.8 * var(--u));
+    top: calc(879.4 * var(--u));
+    width: calc(170 * var(--u));
+    height: calc(42 * var(--u));
+    transform: translate(-50%, -50%) rotate(-8.85deg);
+    z-index: 4;
+  }
+  .stage :global(.mockup) {
+    position: absolute;
+    left: calc(247 * var(--u));
+    top: calc(747 * var(--u));
+    width: calc(186 * var(--u));
+    height: calc(182 * var(--u));
+    object-fit: cover;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  /* ---------- Desktop: koordinatat mbi 1440px ---------- */
+  @media (min-width: 1024px) {
+    .stage { max-width: 1440px; aspect-ratio: 1440 / 970; --u: calc(100cqw / 1440); }
+    .m-only { display: none !important; }
+    .d-only { display: block !important; }
+    .fan.d-only { display: block !important; }
+
+    .title {
+      left: calc(720 * var(--u)); top: calc(150 * var(--u));
+      font-size: calc(92 * var(--u));
+      line-height: .98;
+      letter-spacing: -0.04em;
+    }
+    .sub { left: calc(720 * var(--u)); top: calc(790 * var(--u)); gap: calc(8 * var(--u)); font-size: calc(18 * var(--u)); }
+    .sub img { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+    .ctas { left: calc(720.5 * var(--u)); top: calc(842 * var(--u)); gap: calc(10 * var(--u)); }
+    .ctas .btn { font-size: calc(16 * var(--u)); padding: calc(16 * var(--u)) calc(30 * var(--u)); }
+    .ctas .btn--light { padding-inline: calc(26 * var(--u)); }
+
+    .fan {
+      left: calc(var(--dx) * var(--u));
+      top: calc(var(--dy) * var(--u));
+      --cw: var(--dcw); --ch: var(--dch); --r: var(--dr); --rad: var(--drad); --dealx: var(--ddeal);
+    }
+    .card-hero { box-shadow: 0 4px 8px rgba(0, 0, 0, .08), 0 24px 40px -8px rgba(0, 0, 0, .22); }
+    .sh, .car-box {
+      left: calc(var(--dl) * var(--u));
+      top: calc(var(--dt) * var(--u));
+      width: calc(var(--dw) * var(--u));
+      height: calc(var(--dh) * var(--u));
+    }
+
+    .bubble { transform-origin: calc(var(--dox) * var(--u)) calc(var(--doy) * var(--u)); }
+    .pill, .tail {
+      left: calc(var(--dx) * var(--u));
+      top: calc(var(--dy) * var(--u));
+      transform: translate(-50%, -50%) rotate(var(--dr));
+    }
+    .pill { padding: calc(10 * var(--u)) calc(18 * var(--u)) calc(11 * var(--u)); font-size: calc(18 * var(--u)); }
+    .tail { width: calc(20 * var(--u)); height: calc(14 * var(--u)); }
+    .tail img { left: 23.49%; top: 12.25%; width: 53.02%; height: 62.75%; }
+
+    .hije {
+      left: calc(1352.7 * var(--u)); top: calc(999.35 * var(--u));
+      width: calc(255 * var(--u)); height: calc(63 * var(--u));
+    }
+    .stage :global(.mockup) {
+      left: calc(1191 * var(--u)); top: calc(800.74 * var(--u));
+      width: calc(279 * var(--u)); height: calc(273 * var(--u));
+    }
+  }
+
+  /* ---------- Animacionet ---------- */
+  /* Vetëm opacity + lëvizje (pa blur): i bën karta grafike, jo procesori → faqja hapet më shpejt.
+     Titulli (elementi më i madh që sheh Google) duket që në kornizën e parë, vetëm rrëshqet pak lart. */
+  .rise { animation: rise .7s var(--ease-out) both; }
+  @keyframes rise { from { transform: translateY(14px); } }
+  .reveal { animation: reveal .6s var(--ease-out) var(--d, 0s) both; }
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(14px); }
+  }
+  /* kartat nisin bashkë në qendër dhe hapen si "fan" letrash */
+  .deal { animation: deal .9s var(--ease-spring) var(--delay, .1s) both; }
+  @keyframes deal {
+    from { opacity: 0; transform: translate(-50%, -50%) translate(calc(var(--dealx) * var(--u)), calc(40 * var(--u))) rotate(calc(var(--r) * -1)) scale(.86); }
+    40% { opacity: 1; }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+  /* pastaj notojnë butë, secila me ritmin e vet */
+  .float { animation: float var(--fd) ease-in-out var(--fdl) infinite; }
+  /* vlera fikse (pa variabla) → animacioni kalon te karta grafike dhe nuk e ngarkon procesorin */
+  @keyframes float {
+    50% { translate: 0 -4%; }
+  }
+  .bubble {
+    animation:
+      pop .6s var(--ease-spring) var(--delay) both,
+      bob var(--fd) ease-in-out calc(var(--delay) + .6s) infinite;
+  }
+  @keyframes pop { from { opacity: 0; scale: .4; } }
+  @keyframes bob { 50% { translate: 0 -0.6%; rotate: 1.5deg; } }
+  .stage :global(.drive-in) { animation: drive-in .9s var(--ease-out) .45s both; }
+  @keyframes drive-in { from { opacity: 0; translate: calc(120 * var(--u)) 0; } }
+</style>

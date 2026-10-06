@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mrentals.al/sitemap.xml
+Sitemap: https://mrentals.al/sitemap-index.xml

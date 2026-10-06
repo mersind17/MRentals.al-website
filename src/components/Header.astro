@@ -1,0 +1,266 @@
+---
+// Header si te MrDev: transparent lart → kapsulë xhami e errët pas scroll-it,
+// hamburger 2 vija → X dhe menu në ekran të plotë me linke që hyjnë me radhë.
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo.png';
+import { waLink, INSTAGRAM } from '../data/site';
+import { T, homePath, section, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  /** Kjo faqe në gjuhën tjetër (përndryshe kryefaqja e asaj gjuhe). */
+  altHref?: string;
+}
+const { lang } = Astro.props;
+const t = T[lang];
+const other: Lang = lang === 'sq' ? 'en' : 'sq';
+const altHref = Astro.props.altHref ?? homePath(other);
+---
+
+<header class="header" id="header" data-open={t.header.open} data-close={t.header.close}>
+  <div class="bar">
+    <a href={homePath(lang)} class="logo" aria-label={t.header.home}>
+      <Image src={logo} alt="MRentals" width={172} densities={[1, 2]} loading="eager" fetchpriority="high" />
+    </a>
+
+    <nav class="nav" aria-label={t.header.navLabel}>
+      {t.nav.map((l) => <a href={section(lang, l.id)}>{l.label}</a>)}
+      <a href={waLink(t.wa.default)} class="btn btn--lime nav-cta" target="_blank" rel="noopener">{t.header.book}</a>
+    </nav>
+
+    <div class="right">
+      <!-- ndërrimi i gjuhës: SQ ↔ EN -->
+      <a href={altHref} class="lang" id="langSwitch" hreflang={other} lang={other} aria-label={t.header.switchLabel} title={t.header.switchLabel}>
+        <img src={`/img/flag-${other}.svg`} alt="" width="22" height="22" />
+      </a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label={t.header.open} aria-expanded="false" aria-controls="menu">
+        <span class="lines"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" id="menu">
+  <nav class="menu-nav" aria-label="Mobile">
+    {t.nav.map((l, i) => <a href={section(lang, l.id)} style={`--i:${i}`}>{l.label}</a>)}
+    <div class="menu-ctas" style={`--i:${t.nav.length}`}>
+      <a href={waLink(t.wa.default)} class="btn btn--lime" target="_blank" rel="noopener">
+        <img src="/img/wa-dark.svg" alt="" width="18" height="18" />{t.header.bookWa}
+      </a>
+      <a href={INSTAGRAM} class="btn menu-ghost" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </nav>
+</div>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    padding: 12px 16px 0;
+    animation: header-in .7s var(--ease-out) both;
+  }
+  @keyframes header-in {
+    from { transform: translateY(-80px); opacity: 0; }
+  }
+  .bar {
+    position: relative;
+    z-index: 2;
+    max-width: 1152px;
+    height: 64px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    background: transparent;
+    transition: background-color .5s var(--ease-out), border-color .5s var(--ease-out),
+      box-shadow .5s var(--ease-out), backdrop-filter .5s var(--ease-out);
+  }
+  /* pas scroll-it ose kur menuja është hapur → kapsula e errët nga Figma */
+  .is-scrolled .bar, .is-open .bar {
+    background: rgba(20, 20, 22, .72);
+    border-color: rgba(255, 255, 255, .08);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, .6);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  }
+
+  .logo :global(img) {
+    width: 138px; height: auto;
+    /* lart, mbi sfondin e çelët, logoja del e errët; në kapsulë merr ngjyrën origjinale */
+    filter: brightness(0) opacity(.88);
+    transition: filter .5s var(--ease-out);
+  }
+  .is-scrolled .logo :global(img), .is-open .logo :global(img) { filter: none; }
+
+  .nav { display: none; }
+
+  .right { display: flex; align-items: center; gap: 8px; }
+  /* butoni i gjuhës: flamuri i gjuhës ku të çon (🇬🇧 te shqipja, 🇦🇱 te anglishtja) */
+  .lang {
+    display: grid; place-items: center;
+    width: 40px; height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    transition: border-color .5s var(--ease-out), background-color .2s, transform .15s var(--ease-out);
+  }
+  .lang:active { transform: scale(.94); }
+  .lang img {
+    width: 22px; height: 22px;
+    border-radius: 999px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .08);
+  }
+  .lang:hover { background: rgba(0, 0, 0, .05); }
+  .is-scrolled .lang, .is-open .lang { border-color: rgba(255, 255, 255, .1); }
+  .is-scrolled .lang:hover, .is-open .lang:hover { background: rgba(255, 255, 255, .08); }
+
+  .menu-btn {
+    position: relative;
+    display: grid; place-items: center;
+    width: 40px; height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    transition: border-color .5s var(--ease-out);
+  }
+  .lines { position: relative; width: 18px; height: 12px; }
+  .lines span {
+    position: absolute; left: 0;
+    width: 100%; height: 1.5px;
+    background: var(--ink-2);
+    transition: transform .3s var(--ease-out), background-color .5s var(--ease-out);
+  }
+  .lines span:first-child { top: 0; }
+  .lines span:last-child { bottom: 0; }
+  .is-scrolled .menu-btn, .is-open .menu-btn { border-color: rgba(255, 255, 255, .1); }
+  .is-scrolled .lines span, .is-open .lines span { background: #fff; }
+  .is-open .lines span:first-child { transform: translateY(5.25px) rotate(45deg); }
+  .is-open .lines span:last-child { transform: translateY(-5.25px) rotate(-45deg); }
+
+  /* ---------- Menuja mobile ---------- */
+  .menu {
+    position: fixed; inset: 0;
+    z-index: 40;
+    display: block;
+    /* plotësisht e errët — asgjë nga faqja nuk duket pas menusë */
+    background: var(--ink);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s var(--ease-out), visibility 0s .2s;
+  }
+  .menu.is-open { opacity: 1; visibility: visible; transition: opacity .2s var(--ease-out); }
+  /* si te Jitter: linket lart, menjëherë poshtë header-it, të mëdhenj dhe ngjitur me njëri-tjetrin */
+  .menu-nav {
+    height: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 116px 24px 32px;
+    display: flex; flex-direction: column; justify-content: flex-start; gap: 0;
+  }
+  .menu-nav > * {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .5s var(--ease-out), transform .5s var(--ease-out), color .3s;
+  }
+  .menu.is-open .menu-nav > * {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(80ms + var(--i) * 50ms);
+  }
+  .menu-nav > a {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 52px;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+    color: #fff;
+  }
+  .menu-nav > a:hover { color: var(--lime); }
+  .menu-ctas { margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .menu-ctas .btn { padding: 14px 22px; font-size: 14px; }
+  .menu-ghost { border: 1px solid rgba(255, 255, 255, .15); color: rgba(255, 255, 255, .7); }
+
+  /* ---------- Desktop ---------- */
+  @media (min-width: 1024px) {
+    .bar { height: 60px; padding: 12px 32px; }
+    .logo :global(img) { width: 172px; }
+    .menu-btn, .menu { display: none; }
+    .nav { display: flex; align-items: center; gap: 32px; margin-left: auto; margin-right: 16px; }
+    .lang { width: 36px; height: 36px; }
+    .lang img { width: 20px; height: 20px; }
+    .nav > a:not(.btn) {
+      position: relative;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted-2);
+      transition: color .3s;
+    }
+    .nav > a:not(.btn)::after {
+      content: '';
+      position: absolute; left: 0; bottom: -6px;
+      width: 0; height: 1px;
+      background: var(--lime);
+      transition: width .3s var(--ease-out);
+    }
+    .nav > a:not(.btn):hover { color: var(--ink); }
+    .nav > a:not(.btn):hover::after { width: 100%; }
+    .is-scrolled .nav > a:not(.btn) { color: rgba(255, 255, 255, .65); }
+    .is-scrolled .nav > a:not(.btn):hover { color: #fff; }
+    .nav-cta { padding: 10px 20px; font-size: 14px; }
+  }
+</style>
+
+<script>
+  const header = document.getElementById('header')!;
+  const btn = document.getElementById('menuBtn')!;
+  const menu = document.getElementById('menu')!;
+
+  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
+  onScroll();
+  addEventListener('scroll', onScroll, { passive: true });
+
+  const setOpen = (open: boolean) => {
+    header.classList.toggle('is-open', open);
+    menu.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', (open ? header.dataset.close : header.dataset.open) ?? '');
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  };
+  btn.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
+
+  // Logoja: nëse je tashmë në këtë faqe, mos e rifresko — thjesht kthehu butë në fillim
+  const logo = header.querySelector<HTMLAnchorElement>('.logo')!;
+  logo.addEventListener('click', (e) => {
+    if (logo.pathname !== location.pathname) return;
+    e.preventDefault();
+    setOpen(false);
+    history.replaceState(null, '', location.pathname);
+    scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Ndërrimi i gjuhës: mbaj mend në cilin seksion je dhe vazhdo nga aty në gjuhën tjetër
+  const KEY = 'mr-lang-pos';
+  const sections = () => [...document.querySelectorAll<HTMLElement>('main section[id], footer[id]')];
+  const docTop = (el: HTMLElement) => el.getBoundingClientRect().top + scrollY;
+  document.getElementById('langSwitch')!.addEventListener('click', () => {
+    const current = sections().filter((s) => s.getBoundingClientRect().top <= 1).pop();
+    const pos = current ? { id: current.id, delta: scrollY - docTop(current) } : { id: '', delta: scrollY };
+    try { sessionStorage.setItem(KEY, JSON.stringify(pos)); } catch {}
+  });
+  try {
+    const saved = sessionStorage.getItem(KEY);
+    if (saved) {
+      sessionStorage.removeItem(KEY);
+      const { id, delta } = JSON.parse(saved) as { id: string; delta: number };
+      const target = id ? document.getElementById(id) : null;
+      const go = () => scrollTo({ top: (target ? docTop(target) : 0) + delta, behavior: 'instant' });
+      go();
+      // seksionet që vizatohen me vonesë (content-visibility) mund të ndryshojnë pak lartësinë → korrigjo 3 herë
+      let n = 0;
+      const fix = () => { go(); if (++n < 3) requestAnimationFrame(fix); else onScroll(); };
+      requestAnimationFrame(fix);
+    }
+  } catch {}
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+</script>

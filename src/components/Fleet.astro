@@ -1,0 +1,218 @@
+---
+// "Flota jonë": çdo makinë ka një skenë (emri i madh + hija + foto) me koordinatat e Figma-s
+// — mobile mbi 390px, desktop mbi kartën 560px — dhe poshtë bllokun me info/butona.
+import { Picture } from 'astro:assets';
+import { CARS } from '../data/cars';
+import { waLink } from '../data/site';
+import { T, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  /** Tekste të tjera për titullin (p.sh. te faqja e Elbasanit). */
+  eyebrow?: string;
+  title?: string;
+}
+const { lang } = Astro.props;
+const t = T[lang];
+const eyebrow = Astro.props.eyebrow ?? t.fleet.eyebrow;
+const title = Astro.props.title ?? t.fleet.title;
+
+const vars = (p: 'm' | 'd', c: (typeof CARS)[number]) => {
+  const L = c[p];
+  const [sx, sy, sw, sh, sr] = L.shadow;
+  const pad = p === 'm' ? 20 : 28; // sa e zgjeron SVG-ja elipsën (blur)
+  return [
+    `--${p}nl:${L.name[0]}`, `--${p}nt:${L.name[1]}`, `--${p}ns:${L.name[2]}`,
+    `--${p}cl:${L.car[0]}`, `--${p}ct:${L.car[1]}`, `--${p}cw:${L.car[2]}`, `--${p}ch:${L.car[3]}`,
+    `--${p}sx:${sx}`, `--${p}sy:${sy}`, `--${p}sw:${sw + pad}`, `--${p}sh:${sh + pad}`, `--${p}sr:${sr}deg`,
+    `--${p}it:${L.infoTop}`,
+  ].join(';');
+};
+---
+
+<section class="fleet" id="flota" aria-labelledby="flota-title">
+  <!-- "narrow" vetëm te kryefaqja: lë vend për makinën e bardhë të hero-s -->
+  <div class:list={['fleet-head sec-head', { narrow: !Astro.props.title }]}>
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 class="h2" id="flota-title">{title}</h2>
+  </div>
+
+  <div class="grid">
+    {CARS.map((car) => (
+      <article class="car" style={`${vars('m', car)};${vars('d', car)};--name-color:${car.nameColor}`}>
+        <div class="stage">
+          <h3 class="name">
+            <span aria-hidden="true">{car.display}</span>
+            <span class="sr-only">{car.name} {t.fleet.trans[car.transmission].toLowerCase()}</span>
+          </h3>
+          <img class="amb m-only" src="/img/amb-m.svg" alt="" width="283" height="50" loading="lazy" />
+          <img class="amb d-only" src="/img/amb-d.svg" alt="" width="423" height="72" loading="lazy" />
+          <div class="photo">
+            <Picture
+              src={car.image}
+              alt={t.fleet.alt(car.name)}
+              formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+              widths={[600, 900]}
+              sizes="(min-width: 1024px) 448px, 76vw"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        <div class="info">
+          <p class="tagline">{car.tagline[lang]}</p>
+          <ul class="specs">
+            <li><img src="/img/icon-dite.svg" alt="" width="17" height="17" />{t.fleet.price(car.price)}</li>
+            <li><img src="/img/icon-kambio.svg" alt="" width="17" height="17" />{t.fleet.trans[car.transmission]}</li>
+            <li><img src="/img/icon-karburant.svg" alt="" width="17" height="17" />{t.fleet.fuel}</li>
+            <li><img src="/img/icon-vende.svg" alt="" width="17" height="17" />{car.seats} {t.fleet.seats}</li>
+          </ul>
+          <div class="btns">
+            <a class="btn btn--dark" href={waLink(t.wa.car(car.name, t.fleet.trans[car.transmission], car.price))} target="_blank" rel="noopener">
+              {t.fleet.book}<span class="sr-only"> {car.name}</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  /* mbi makinën e bardhë të hero-s, që teksti të mos mbulohet kurrë */
+  .fleet { position: relative; z-index: 3; padding-top: 36px; padding-bottom: 24px; }
+  .fleet-head { padding: 0 20px 8px; max-width: 480px; margin: 0 auto; }
+  /* mobile: titulli në dy rreshta (si në Figma) — lë vend për makinën djathtas */
+  .fleet-head.narrow .h2 { max-width: 250px; }
+
+  .grid { display: flex; flex-direction: column; align-items: center; }
+
+  .car {
+    width: 100%;
+    max-width: 480px;
+    padding-bottom: 43px;
+    --nl: var(--mnl); --nt: var(--mnt); --ns: var(--mns);
+    --cl: var(--mcl); --ct: var(--mct); --cw: var(--mcw); --ch: var(--mch);
+    --sx: var(--msx); --sy: var(--msy); --sw: var(--msw); --sh: var(--msh); --sr: var(--msr);
+    --it: var(--mit); --base: 390;
+  }
+  /* mobile: makinat jashtë ekranit nuk vizatohen derisa t'u afrohesh → hapja kërkon më pak punë.
+     (jo te desktop: aty emrat dalin mbi kartë dhe content-visibility do t'i priste) */
+  @media (max-width: 1023.98px) {
+    .car { content-visibility: auto; contain-intrinsic-size: auto 460px; }
+  }
+  .stage {
+    container-type: inline-size;
+    position: relative;
+    aspect-ratio: var(--base) / var(--it);
+  }
+  .stage > * { --u: calc(100cqw / var(--base)); }
+
+  .name {
+    position: absolute;
+    left: calc(var(--nl) * var(--u));
+    top: calc(var(--nt) * var(--u));
+    font-family: var(--f-poster);
+    font-weight: 400;
+    font-size: calc(var(--ns) * var(--u));
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--name-color);
+    white-space: nowrap;
+  }
+  .amb {
+    position: absolute;
+    left: calc(var(--sx) * var(--u));
+    top: calc(var(--sy) * var(--u));
+    width: calc(var(--sw) * var(--u));
+    height: calc(var(--sh) * var(--u));
+    transform: translate(-50%, -50%) rotate(var(--sr));
+  }
+  .photo {
+    position: absolute;
+    left: calc(var(--cl) * var(--u));
+    top: calc(var(--ct) * var(--u));
+    width: calc(var(--cw) * var(--u));
+    height: calc(var(--ch) * var(--u));
+  }
+  .photo :global(img) { width: 100%; height: 100%; object-fit: fill; }
+  .d-only { display: none; }
+
+  .info {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    padding: 0 25px;
+    text-align: center;
+  }
+  .tagline { font-weight: 500; font-size: 17px; line-height: normal; color: var(--ink-3); }
+  .specs {
+    list-style: none;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px;
+    font-weight: 500; font-size: 13px; line-height: normal; color: var(--muted);
+  }
+  .specs li { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .specs img { width: 16px; height: 16px; }
+  .btns { display: flex; gap: 10px; width: 100%; max-width: 340px; }
+  .btns .btn { flex: 1; padding: 14px 20px; font-weight: 600; font-size: 15px; }
+
+  @media (min-width: 1024px) {
+    .fleet { padding-top: 40px; padding-bottom: 40px; }
+    .fleet-head { width: var(--content); max-width: none; padding: 0; margin-bottom: 56px; }
+    .fleet-head.narrow .h2 { max-width: none; }
+    .grid {
+      width: var(--content); margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 88px 32px;
+    }
+    .car {
+      max-width: none; padding-bottom: 0;
+      --nl: var(--dnl); --nt: var(--dnt); --ns: var(--dns);
+      --cl: var(--dcl); --ct: var(--dct); --cw: var(--dcw); --ch: var(--dch);
+      --sx: var(--dsx); --sy: var(--dsy); --sw: var(--dsw); --sh: var(--dsh); --sr: var(--dsr);
+      --it: var(--dit); --base: 560;
+    }
+    /* makina e fundit (tek) në mes */
+    .car:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 16px); }
+    .m-only { display: none; }
+    .d-only { display: block; }
+    .tagline { font-size: 20px; color: var(--ink); }
+    .specs { gap: 16px; font-size: 14px; }
+    .specs li { gap: 6px; }
+    .specs img { width: 17px; height: 17px; }
+    .btns { width: auto; max-width: none; padding-top: 6px; }
+    .btns .btn { flex: none; width: 390px; padding: 15px 0; font-size: 16px; }
+  }
+
+  /* ---------- Animacionet me scroll (vetëm CSS, pa JavaScript) ----------
+     Kur karta hyn në ekran: emri vjen nga njëra anë, makina nga ana tjetër, hija "ulet" poshtë saj.
+     Kartat tek nga majtas, çiftet nga djathtas (te desktop: kolona majtas / djathtas). */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .car { view-timeline-name: --car; --dir: -1; }
+      .car:nth-child(even) { --dir: 1; }
+
+      .name, .photo, .amb {
+        animation-timeline: --car;
+        animation-range: entry 0% cover 45%;
+        animation-fill-mode: both;
+        animation-timing-function: cubic-bezier(0.3, 0.7, 0.4, 1);
+      }
+      .name { animation-name: name-in; }
+      .photo { animation-name: car-in; }
+      .amb { animation-name: shadow-in; }
+      .info { animation: info-in both cubic-bezier(0.22, 1, 0.36, 1); animation-timeline: --car; animation-range: entry 30% cover 45%; }
+    }
+  }
+  @keyframes name-in {
+    from { translate: calc(var(--dir) * 45%) 0; opacity: 0; }
+  }
+  @keyframes car-in {
+    from { translate: calc(var(--dir) * -28%) 0; scale: .94; opacity: 0; }
+  }
+  @keyframes shadow-in {
+    from { scale: .5 1; opacity: 0; }
+  }
+  @keyframes info-in {
+    from { translate: 0 24px; opacity: 0; }
+  }
+</style>

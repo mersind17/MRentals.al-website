@@ -1,0 +1,103 @@
+---
+// Harta është imazh statik (jo iframe Google Maps) → 0 JavaScript, ngarkohet menjëherë.
+import { Picture } from 'astro:assets';
+import map from '../assets/map.png';
+import { ADDRESS, MAPS_URL } from '../data/site';
+import { T, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const t = T[Astro.props.lang].map;
+---
+
+<section class="loc wrap" id="zyra" aria-labelledby="loc-title">
+  <div class="sec-head">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h2 class="h2" id="loc-title">{t.title}</h2>
+  </div>
+
+  <div class="box reveal-up">
+    <!-- emri i linkut vjen nga teksti brenda (alt + sr-only + krediti) — përputhet me atë që shihet -->
+    <a class="map" href={MAPS_URL} target="_blank" rel="noopener">
+      <span class="sr-only">{t.mapLabel}:</span>
+      <Picture
+        src={map}
+        alt={t.alt}
+        formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+        widths={[700, 1200]}
+        sizes="(min-width: 1024px) 760px, 100vw"
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="pin" aria-hidden="true">
+        <img class="halo" src="/img/pin-halo.svg" alt="" width="64" height="64" />
+        <img class="ring" src="/img/pin-ring.svg" alt="" width="46" height="46" />
+        <img class="dot" src="/img/pin-dot.svg" alt="" width="8" height="8" />
+        <span class="label">MRentals</span>
+      </span>
+      <span class="credit">© OpenStreetMap contributors</span>
+    </a>
+
+    <div class="info">
+      <div class="row">
+        <p class="k">{t.address}</p>
+        <p class="v">{ADDRESS}</p>
+      </div>
+      <div class="row">
+        <p class="k">{t.hours}</p>
+        <p class="v open"><img src="/img/open-dot.svg" alt="" width="8" height="8" />{t.open}</p>
+      </div>
+      <div class="btns">
+        <a class="btn btn--dark" href={MAPS_URL} target="_blank" rel="noopener">{t.openMaps}&nbsp;&nbsp;↗</a>
+        <a class="btn btn--grey" href={MAPS_URL} target="_blank" rel="noopener">{t.directions}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .loc { display: flex; flex-direction: column; gap: 24px; padding-top: 72px; }
+  .box { background: #fff; border-radius: 24px; overflow: clip; display: flex; flex-direction: column; }
+
+  .map { position: relative; display: block; height: 240px; overflow: clip; }
+  .map :global(picture img) { width: 100%; height: 100%; object-fit: cover; }
+  /* pin-i në qendër të hartës, si në Figma (350×240 → qendra 175, 120) */
+  .pin { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+  .pin img { max-width: none; }
+  .halo { position: absolute; left: -32px; top: -32px; width: 64px; height: 64px; }
+  .ring { position: absolute; left: -23px; top: -19px; width: 46px; height: 46px; }
+  .dot { position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; }
+  .label {
+    position: absolute; left: 0; top: -58px;
+    translate: -50% 0;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--f-label);
+    font-weight: 700;
+    font-size: 13px;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  .credit { position: absolute; right: 8px; bottom: 6px; font-size: 9px; color: var(--muted); }
+
+  .info { display: flex; flex-direction: column; gap: 18px; padding: 22px 20px; }
+  .row { display: flex; flex-direction: column; gap: 4px; }
+  .k { font-family: var(--f-label); font-weight: 700; font-size: 11px; color: var(--muted); text-transform: uppercase; line-height: normal; }
+  .v { font-weight: 600; font-size: 16px; color: var(--ink-2); line-height: normal; }
+  .open { display: flex; align-items: center; gap: 8px; }
+  .btns { display: flex; flex-direction: column; gap: 8px; padding-top: 4px; }
+  .btns .btn { width: 100%; padding: 15px 0; }
+  .btns .btn--dark { font-weight: 600; }
+  .btn--grey { background: var(--chip-2); color: var(--ink-2); }
+  .btn--grey:hover { background: #e2e2e6; }
+
+  @media (min-width: 1024px) {
+    .loc { gap: 40px; padding-top: 120px; }
+    .box { flex-direction: row; border-radius: 28px; }
+    .map { flex: none; width: 66%; height: 440px; }
+    .info { flex: 1; justify-content: center; gap: 24px; padding: 40px; }
+    .btns .btn { width: 100%; max-width: 312px; }
+  }
+</style>

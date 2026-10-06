@@ -1,0 +1,166 @@
+---
+// Faqe lokacioni (p.sh. /makina-me-qera-elbasan). Nuk ka dizajn më vete në Figma —
+// përdor të njëjtat elemente si kryefaqja (tituj, karta, flota, FAQ, harta, kontakti).
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Fleet from './Fleet.astro';
+import Faq from './Faq.astro';
+import MapSection from './MapSection.astro';
+import Contact from './Contact.astro';
+import audi from '../assets/cars/audi.png';
+import { SITE_URL, waLink } from '../data/site';
+import { business, fleet, faq, breadcrumb } from '../data/schema';
+import { T, homePath, type Lang } from '../i18n';
+import type { Location } from '../data/locations';
+
+interface Props { lang: Lang; loc: Location }
+const { lang, loc } = Astro.props;
+const t = T[lang];
+const other: Lang = lang === 'sq' ? 'en' : 'sq';
+const pageUrl = `${SITE_URL}${loc.path[lang]}`;
+const homeUrl = lang === 'en' ? `${SITE_URL}/en` : `${SITE_URL}/`;
+
+const service = {
+  '@type': 'Service',
+  '@id': `${pageUrl}#service`,
+  serviceType: lang === 'en' ? 'Car rental' : 'Makina me qera',
+  name: loc.h1[lang],
+  description: loc.metaDescription[lang],
+  provider: { '@id': `${SITE_URL}/#business` },
+  areaServed: { '@type': 'City', name: loc.name[lang] },
+  offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: '25', highPrice: '55', offerCount: '7' },
+};
+---
+
+<Base
+  title={loc.metaTitle[lang]}
+  description={loc.metaDescription[lang]}
+  lang={lang}
+  path={loc.path[lang]}
+  alternates={loc.path}
+  xDefault={loc.path.en}
+  schema={[
+    business(),
+    service,
+    fleet(lang, pageUrl),
+    faq(lang, pageUrl),
+    breadcrumb([{ name: t.loc.home, url: homeUrl }, { name: loc.name[lang], url: pageUrl }]),
+  ]}
+>
+  <Header lang={lang} altHref={loc.path[other]} />
+  <main>
+    <section class="intro wrap" aria-labelledby="page-title">
+      <div class="text">
+        <nav class="crumbs" aria-label={t.loc.breadcrumb}>
+          <a href={homePath(lang)}>{t.loc.home}</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{loc.name[lang]}</span>
+        </nav>
+        <p class="eyebrow">{loc.eyebrow[lang]}</p>
+        <h1 class="page-title" id="page-title">{loc.h1[lang]}</h1>
+        <p class="lead">{loc.intro[lang]}</p>
+        <ul class="chips">
+          {loc.highlights[lang].map((h) => <li>{h}</li>)}
+        </ul>
+        <div class="ctas">
+          <a href={waLink(t.wa.default)} class="btn btn--dark" target="_blank" rel="noopener">
+            <img src="/img/wa-light.svg" alt="" width="18" height="18" />{t.header.bookWa}
+          </a>
+          <a href="#flota" class="btn btn--light">{t.loc.prices}</a>
+        </div>
+      </div>
+
+      <div class="visual">
+        <img class="amb" src="/img/amb-d.svg" alt="" width="423" height="72" />
+        <Picture
+          src={audi}
+          alt={t.loc.photoAlt}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[600, 900]}
+          sizes="(min-width: 1024px) 520px, 90vw"
+          loading="eager"
+          fetchpriority="high"
+          class="car"
+        />
+      </div>
+    </section>
+
+    <Fleet lang={lang} eyebrow={loc.fleetEyebrow[lang]} title={loc.fleetTitle[lang]} />
+
+    <div class="patterned">
+      <section class="about wrap" aria-label={loc.h1[lang]}>
+        {loc.sections.map((s) => (
+          <article class="card block">
+            <h2>{s.title[lang]}</h2>
+            <p>{s.body[lang]}</p>
+          </article>
+        ))}
+      </section>
+
+      <Faq lang={lang} />
+      <MapSection lang={lang} />
+    </div>
+  </main>
+  <Contact lang={lang} />
+</Base>
+
+<style>
+  main { overflow-x: clip; }
+
+  /* ---------- Hyrja ---------- */
+  .intro { padding-top: 112px; display: flex; flex-direction: column; gap: 32px; }
+  .text { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .crumbs { display: flex; gap: 8px; font-size: 13px; color: var(--muted); }
+  .crumbs a { text-decoration: underline; text-underline-offset: 3px; }
+  .crumbs a:hover { color: var(--ink); }
+  .page-title {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--ink-2);
+    animation: rise .8s var(--ease-out) .1s both;
+  }
+  .lead { font-size: 16px; line-height: 1.55; color: var(--muted-2); max-width: 560px; }
+  .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px; }
+  .chips li {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--mint);
+    color: #1f5a35;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .chips li:first-child { background: var(--lime); color: var(--ink); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 10px; }
+  .ctas .btn { padding: 15px 22px; }
+
+  .visual { position: relative; aspect-ratio: 920 / 520; animation: drive .9s var(--ease-out) .25s both; }
+  .visual :global(.car) { position: relative; width: 100%; height: auto; }
+  .amb { position: absolute; left: 6%; right: 6%; bottom: 2%; width: 88%; height: 18%; rotate: -3deg; }
+
+  @keyframes rise { from { opacity: 0; translate: 0 16px; } }
+  @keyframes drive { from { opacity: 0; translate: 60px 0; } }
+
+  /* ---------- Tekstet SEO ---------- */
+  .about { display: grid; gap: 10px; padding-top: 72px; }
+  .block { padding: 22px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .block h2 { font-weight: 600; font-size: 19px; line-height: 1.25; color: var(--ink-2); }
+  .block p { font-size: 15px; line-height: 1.6; color: var(--muted-2); }
+
+  @media (min-width: 1024px) {
+    .intro { flex-direction: row; align-items: center; gap: 48px; padding-top: 150px; }
+    .text { flex: 1; gap: 18px; }
+    .page-title { font-size: 76px; line-height: .98; }
+    .lead { font-size: 18px; }
+    .chips li { font-size: 15px; }
+    .ctas .btn { padding: 16px 26px; font-size: 16px; }
+    .visual { flex: none; width: 46%; }
+    .about { grid-template-columns: repeat(3, 1fr); gap: 20px; padding-top: 120px; }
+    .block { padding: 28px 28px 30px; gap: 14px; }
+    .block h2 { font-size: 21px; }
+  }
+</style>

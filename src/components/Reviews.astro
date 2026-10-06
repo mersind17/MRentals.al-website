@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import google from '../assets/brand/google.png';
+import { REVIEWS, RATING, MAPS_URL } from '../data/site';
+import { T, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const t = T[Astro.props.lang].reviews;
+---
+
+<section class="reviews" id="vleresimet" aria-labelledby="reviews-title">
+  <div class="top wrap">
+    <div class="sec-head">
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h2 class="h2" id="reviews-title">{t.title}</h2>
+    </div>
+    <div class="score">
+      <p class="value">{RATING.value}</p>
+      <div class="stars-wrap">
+        <p class="stars" aria-label={t.stars(RATING.value)}>★★★★★</p>
+        <p class="count">{t.count(RATING.count)}</p>
+      </div>
+      <Image src={google} alt="Google" width={30} densities={[1, 2]} class="g" loading="lazy" />
+    </div>
+  </div>
+
+  <!-- Mobile: rrëshqitje anash · Desktop: 3 kolona -->
+  <ul class="list">
+    {REVIEWS.map((r) => (
+      <li class="card review">
+        <div class="body">
+          <p class="stars" aria-hidden="true">★★★★★</p>
+          <blockquote>"{r.text}"</blockquote>
+        </div>
+        <p class="author">
+          <span class="avatar" aria-hidden="true">{r.name[0].toUpperCase()}</span>
+          {r.name}
+        </p>
+      </li>
+    ))}
+  </ul>
+
+  <div class="wrap">
+    <a href={MAPS_URL} class="btn btn--light more" target="_blank" rel="noopener">{t.more}</a>
+  </div>
+</section>
+
+<style>
+  .reviews { display: flex; flex-direction: column; gap: 24px; padding: 72px 0 24px; }
+  .top { display: flex; flex-direction: column; gap: 24px; }
+  .score { display: flex; align-items: center; gap: 12px; }
+  .value { font-family: var(--f-display); font-weight: 600; font-size: 44px; line-height: normal; color: var(--ink-2); }
+  .stars-wrap { display: flex; flex-direction: column; gap: 2px; }
+  .stars { color: var(--star); font-size: 18px; line-height: normal; }
+  .count { font-size: 13px; color: var(--muted); line-height: normal; }
+  .score :global(.g) { width: 24px; height: 24px; }
+
+  .list {
+    list-style: none;
+    display: flex; gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .list::-webkit-scrollbar { display: none; }
+  .review {
+    flex: none;
+    width: 290px;
+    scroll-snap-align: start;
+    display: flex; flex-direction: column; justify-content: space-between; gap: 14px;
+    padding: 20px;
+  }
+  .body { display: flex; flex-direction: column; gap: 14px; }
+  .review .stars { font-size: 14px; }
+  blockquote { font-size: 15px; line-height: 1.48; color: var(--ink-2); }
+  .author { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; color: var(--ink-2); }
+  .avatar {
+    display: grid; place-items: center;
+    width: 32px; height: 32px;
+    border-radius: 999px;
+    background: var(--chip);
+    font-weight: 600; font-size: 13px;
+  }
+  .more { padding: 14px 22px; }
+
+  @media (min-width: 1024px) {
+    .reviews { gap: 32px; padding-top: 120px; padding-bottom: 0; }
+    .top { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+    .score { gap: 14px; }
+    .value { font-size: 56px; }
+    .stars-wrap { gap: 4px; }
+    .stars { font-size: 20px; }
+    .count { font-size: 14px; }
+    .score :global(.g) { width: 30px; height: 30px; }
+    .list { width: var(--content); margin: 0 auto; padding: 0; gap: 20px; overflow: visible; }
+    .review { flex: 1; width: auto; padding: 28px 28px 30px; gap: 24px; }
+    .review .stars { font-size: 15px; }
+    blockquote { font-size: 17px; line-height: 1.5; }
+    .author { font-size: 15px; }
+    .avatar { width: 36px; height: 36px; font-size: 14px; }
+    .more { padding: 15px 24px; font-size: 16px; }
+  }
+</style>

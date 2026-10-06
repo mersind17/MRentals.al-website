@@ -1,0 +1,57 @@
+---
+import { T, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const t = T[Astro.props.lang].steps;
+---
+
+<section class="steps wrap" id="si-funksionon" aria-labelledby="steps-title">
+  <div class="sec-head">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h2 class="h2" id="steps-title">{t.title}</h2>
+  </div>
+  <ol class="list">
+    {t.items.map((s, i) => (
+      <li class="card step">
+        <span class="num" aria-hidden="true">{i + 1}</span>
+        <div class="text">
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+  <p class="note">{t.note}</p>
+</section>
+
+<style>
+  .steps { display: flex; flex-direction: column; gap: 24px; padding: 72px 0 24px; }
+  .list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; padding: 18px; }
+  .num {
+    flex: none;
+    display: grid; place-items: center;
+    width: 40px; height: 40px;
+    border-radius: 999px;
+    background: var(--ink-2);
+    color: #fff;
+    font-family: var(--f-label);
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .text { display: flex; flex-direction: column; gap: 4px; }
+  h3 { font-weight: 600; font-size: 17px; line-height: normal; color: var(--ink-2); }
+  .text p { font-size: 14px; line-height: 1.45; color: var(--muted); }
+  .note { font-size: 13px; line-height: 1.45; color: var(--muted); }
+
+  @media (min-width: 1024px) {
+    .steps { gap: 32px; padding-top: 120px; padding-bottom: 0; }
+    .list { flex-direction: row; gap: 20px; }
+    .step { flex: 1; flex-direction: column; gap: 14px; padding: 28px 28px 30px; }
+    .num { width: 48px; height: 48px; font-size: 18px; background: var(--ink); }
+    .text { gap: 14px; }
+    h3 { font-size: 21px; }
+    .text p { font-size: 15px; line-height: 1.5; }
+    .note { font-size: 14px; line-height: normal; }
+  }
+</style>
