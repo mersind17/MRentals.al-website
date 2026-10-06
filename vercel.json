@@ -13,6 +13,7 @@
     },
     { "source": "/makina/:slug", "destination": "/#flota", "permanent": true },
     { "source": "/:car-details.html", "destination": "/#flota", "permanent": true },
+    { "source": "/:car-details", "destination": "/#flota", "permanent": true },
     { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/makina-me-qera-tirane", "destination": "/", "permanent": true },
     { "source": "/makina-me-qera-rinas", "destination": "/", "permanent": true }
