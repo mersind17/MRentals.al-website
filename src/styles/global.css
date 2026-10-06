@@ -183,15 +183,22 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
       /* që bishtat e g, j, ç të mos priten nga sfondi i tekstit */
       padding-bottom: .12em;
       margin-bottom: -.12em;
-      animation: text-fill linear both;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: view();
       animation-range: entry 35% cover 50%;
     }
     .card, .reveal-up {
-      animation: rise-in both cubic-bezier(0.22, 1, 0.36, 1);
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+      animation-fill-mode: both;
       animation-timeline: view();
       animation-range: entry 0% entry 80%;
     }
+    /* KUJDES: emri i animacionit qëndron në rregull më vete (me :where, pa ndryshuar specificitetin).
+       Nëse të gjitha vetitë janë në një rregull, minifikuesi i CSS-së i bashkon në
+       `animation: … view()` — formë që shfletuesit e refuzojnë → animacioni nuk punon në production. */
+    :where(.h2, .fill-text) { animation-name: text-fill; }
+    :where(.card, .reveal-up) { animation-name: rise-in; }
   }
 }
 @keyframes text-fill {

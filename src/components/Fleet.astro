@@ -200,7 +200,9 @@ const vars = (p: 'm' | 'd', c: (typeof CARS)[number]) => {
       .name { animation-name: name-in; }
       .photo { animation-name: car-in; }
       .amb { animation-name: shadow-in; }
-      .info { animation: info-in both cubic-bezier(0.22, 1, 0.36, 1); animation-timeline: --car; animation-range: entry 30% cover 45%; }
+      /* emri në rregull më vete — shih shënimin te global.css (minifikuesi) */
+      .info { animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); animation-fill-mode: both; animation-timeline: --car; animation-range: entry 30% cover 45%; }
+      .car .info { animation-name: info-in; }
     }
   }
   @keyframes name-in {
