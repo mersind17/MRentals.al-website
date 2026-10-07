@@ -7,10 +7,12 @@ export const WHATSAPP = '355695169873';
 export const INSTAGRAM = 'https://www.instagram.com/mrentals_al';
 export const INSTAGRAM_HANDLE = '@mrentals_al';
 export const MAPS_URL = 'https://maps.app.goo.gl/X39XyEFoc9ii8hGL7';
-/** Hap dritaren e vlerësimeve në Google (lrd = ID-ja e biznesit nga linku i Maps). */
-export const REVIEWS_URL = 'https://www.google.com/search?q=MRentals+Elbasan#lrd=0x13504311210b58db:0x8b49ecaa97686724,1';
-/** Google Maps direkt në modalitetin e udhëzimeve drejt zyrës. */
-export const DIRECTIONS_URL = 'https://www.google.com/maps/dir/?api=1&destination=41.1148913,20.0882503';
+/** Place ID i Google (llogaritur nga ID-ja 0x13504311210b58db:0x8b49ecaa97686724 e linkut të Maps). */
+const PLACE_ID = 'ChIJ21gLIRFDUBMRJGdol6rsSYs';
+/** Linku zyrtar "lexo vlerësimet" — hap listën e vlerësimeve edhe në telefon (jo hartën). */
+export const REVIEWS_URL = `https://search.google.com/local/reviews?placeid=${PLACE_ID}`;
+/** Google Maps në modalitetin e udhëzimeve (në telefon hap aplikacionin Maps me rrugën gati). */
+export const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=MRentals%20Elbasan&destination_place_id=${PLACE_ID}&travelmode=driving`;
 export const ADDRESS = 'Bulevardi Qemal Stafa, Elbasan';
 export const RATING = { value: '5.0', count: 43 };
 
