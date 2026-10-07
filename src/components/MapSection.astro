@@ -2,7 +2,7 @@
 // Harta është imazh statik (jo iframe Google Maps) → 0 JavaScript, ngarkohet menjëherë.
 import { Picture } from 'astro:assets';
 import map from '../assets/map.png';
-import { ADDRESS, MAPS_URL } from '../data/site';
+import { ADDRESS, MAPS_URL, DIRECTIONS_URL } from '../data/site';
 import { T, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
@@ -49,7 +49,7 @@ const t = T[Astro.props.lang].map;
       </div>
       <div class="btns">
         <a class="btn btn--dark" href={MAPS_URL} target="_blank" rel="noopener">{t.openMaps}&nbsp;&nbsp;↗</a>
-        <a class="btn btn--grey" href={MAPS_URL} target="_blank" rel="noopener">{t.directions}</a>
+        <a class="btn btn--grey" href={DIRECTIONS_URL} target="_blank" rel="noopener">{t.directions}</a>
       </div>
     </div>
   </div>

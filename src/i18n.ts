@@ -14,14 +14,14 @@ const sq = {
   htmlLang: 'sq',
   ogLocale: 'sq_AL',
   meta: {
-    title: 'Makina me Qera në Elbasan nga 25€/ditë | MRentals',
+    title: 'MRentals | Makina me qera në Elbasan',
     description:
       'Makina me qera në Elbasan, Tiranë dhe Aeroportin e Rinasit (TIA). Flotë e mirëmbajtur, çmime transparente 25–55€/ditë, rezervim i shpejtë me WhatsApp, 24/7.',
   },
   wa: {
     default: 'Përshëndetje! Dua të rezervoj një makinë.',
     question: 'Përshëndetje! Kam një pyetje.',
-    car: (name: string, trans: string, price: number) => `Përshëndetje! Dua të rezervoj ${name} (${trans.toLowerCase()}, ${price}€/ditë).`,
+    car: (name: string) => `Përshëndetje! Dua të rezervoj ${name}.`,
   },
   nav: [
     { label: 'Flota', id: 'flota' },
@@ -154,14 +154,14 @@ const en: Dict = {
   htmlLang: 'en',
   ogLocale: 'en_US',
   meta: {
-    title: 'Car Rental Elbasan & Tirana Airport from €25/day | MRentals',
+    title: 'MRentals | Car rental in Elbasan',
     description:
       'Rent a car in Elbasan, Tirana or at Tirana Airport (Rinas). Well-kept fleet, transparent prices from €25/day, quick WhatsApp booking, open 24/7.',
   },
   wa: {
     default: "Hello! I'd like to rent a car.",
     question: 'Hello! I have a question.',
-    car: (name, trans, price) => `Hello! I'd like to book the ${name} (${trans.toLowerCase()}, €${price}/day).`,
+    car: (name) => `Hello! I'd like to book the ${name}.`,
   },
   nav: [
     { label: 'Fleet', id: 'flota' },

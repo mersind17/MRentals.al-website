@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import google from '../assets/brand/google.png';
-import { REVIEWS, RATING, MAPS_URL } from '../data/site';
+import { REVIEWS, RATING, REVIEWS_URL } from '../data/site';
 import { T, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
@@ -41,7 +41,7 @@ const t = T[Astro.props.lang].reviews;
   </ul>
 
   <div class="wrap">
-    <a href={MAPS_URL} class="btn btn--light more" target="_blank" rel="noopener">{t.more}</a>
+    <a href={REVIEWS_URL} class="btn btn--light more" target="_blank" rel="noopener">{t.more}</a>
   </div>
 </section>
 
