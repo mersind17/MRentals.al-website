@@ -3,6 +3,7 @@
 // (nga Figma) — elementet që i takojnë vetëm njërit shfaqen/fshihen me CSS.
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo.png';
+import mrdev from '../assets/brand/logo-mrdev.png';
 import { PHONE, PHONE_DISPLAY, INSTAGRAM, INSTAGRAM_HANDLE, MAPS_URL, waLink } from '../data/site';
 import { T, section, type Lang } from '../i18n';
 import { ELBASAN } from '../data/locations';
@@ -62,6 +63,10 @@ const t = all.contact;
     <div class="bottom">
       <span class="m-only"><Image src={logo} alt="MRentals" width={129} densities={[1, 2]} loading="lazy" /></span>
       <p>© 2026 MRentals</p>
+      <p class="by">
+        Designed by
+        <Image src={mrdev} alt="MrDev" width={72} height={26} densities={[1, 2, 3]} format="webp" loading="lazy" decoding="async" />
+      </p>
       <p class="d-only">{t.bottom} {PHONE_DISPLAY}</p>
     </div>
   </div>
@@ -117,7 +122,11 @@ const t = all.contact;
 
   .foot-nav { display: flex; gap: 16px; font-weight: 500; font-size: 13px; color: rgba(255, 255, 255, .6); }
   .bottom { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: rgba(255, 255, 255, .45); }
+  .bottom { flex-wrap: wrap; row-gap: 20px; }
   .bottom :global(img) { width: 129px; height: auto; }
+  /* "Designed by MrDev": në telefon rresht më vete poshtë, në desktop në mes */
+  .by { order: 1; flex-basis: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; letter-spacing: .04em; color: rgba(255, 255, 255, .45); }
+  .bottom .by :global(img) { width: 72px; height: 26px; }
 
   @media (min-width: 1024px) {
     .contact { padding: 120px 24px 24px; }
@@ -136,5 +145,6 @@ const t = all.contact;
     .col { flex: none; gap: 12px; font-size: 15px; }
     .h { font-size: 12px; }
     .bottom { font-size: 13px; }
+    .by { order: 0; flex-basis: auto; }
   }
 </style>
