@@ -67,7 +67,7 @@ const vars = (p: 'm' | 'd', c: (typeof CARS)[number]) => {
             <li><img src="/img/icon-dite.svg" alt="" width="17" height="17" />{t.fleet.price(car.price)}</li>
             <li><img src="/img/icon-kambio.svg" alt="" width="17" height="17" />{t.fleet.trans[car.transmission]}</li>
             <li><img src="/img/icon-karburant.svg" alt="" width="17" height="17" />{t.fleet.fuel}</li>
-            <li><img src="/img/icon-vende.svg" alt="" width="17" height="17" />{car.seats} {t.fleet.seats}</li>
+            <li><img src="/img/icon-viti.svg" alt="" width="17" height="17" />{t.fleet.year(car.year)}</li>
           </ul>
           <div class="btns">
             <a class="btn btn--dark" href={waLink(t.wa.car(car.name))} target="_blank" rel="noopener">
@@ -153,6 +153,8 @@ const vars = (p: 'm' | 'd', c: (typeof CARS)[number]) => {
   }
   .specs li { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
   .specs img { width: 16px; height: 16px; }
+  /* Telefonat 375px: "Viti 2013" është pak më i gjatë se "5 vende" → hapësirë më e vogël që të mbetet një rresht */
+  @media (max-width: 389px) { .specs { column-gap: 10px; } }
   .btns { display: flex; gap: 10px; width: 100%; max-width: 340px; }
   .btns .btn { flex: 1; padding: 14px 20px; font-weight: 600; font-size: 15px; }
 
